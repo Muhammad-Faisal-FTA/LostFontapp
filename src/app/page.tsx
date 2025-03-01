@@ -26,8 +26,8 @@ export default function Home() {
           Found  <CgSearchFound size={20} />
        </button>
       </div> 
-      <div>
-        pictures
+      <div className="w-70% h-screen mx-8 bg-slate-400">
+        <div></div>
       </div>
     </div>
     </>
