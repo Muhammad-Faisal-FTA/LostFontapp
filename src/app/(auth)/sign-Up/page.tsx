@@ -24,7 +24,7 @@ const SignupPage = () => {
         </p>
         </div>
 
-        <div className='w-[400px] h-[300px] items-center ml-0 mt-[2rem]'>
+        <div className='w-[25rem] h-[18.75rem] items-center ml-0 mt-[2rem]'>
          <Image src={signupImg} alt="page image"  
           width={400} 
           height={300} 
