@@ -28,7 +28,7 @@ const SignupPage = () => {
       <div className="w-[50%] h-full p-4 m-1 flex flex-col justify-center items-center">
         <div className="w-full h-full">
           <h1 className="text-[2.8rem] w-auto mt-[3rem] text-black font-sarabun font-bold p-3">
-            Lost Something? Let's Help You Find It!
+            Lost Something? Let&apos;s Help You Find It!
           </h1>
         </div>
 

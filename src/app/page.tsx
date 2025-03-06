@@ -42,7 +42,7 @@ export default function Home() {
       <div className="w-50% h-auto flex  justify-center flex-wrap  mx-[4rem] mt-3 mb-8  p-4">
       {images.map((src, index) => (
           <div key={index} className="w-40 h-40 border rounded-lg overflow-hidden shadow-md p-[0.03] m-3">
-            <img src={src} alt={`Image ${index + 1}`} className="w-full h-full object-cover" />
+            <Image src={src} alt={`Image ${index + 1}`} className="w-full h-full object-cover" />
           </div>
         ))}
       </div>
