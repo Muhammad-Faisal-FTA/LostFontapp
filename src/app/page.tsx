@@ -39,12 +39,23 @@ export default function Home() {
           Found  <CgSearchFound size={20} />
        </button>
       </div> 
+      {/* landing page images */}
       <div className="w-50% h-auto flex  justify-center flex-wrap  mx-[4rem] mt-3 mb-8  p-4">
-      {images.map((src, index) => (
-          <div key={index} className="w-40 h-40 border rounded-lg overflow-hidden shadow-md p-[0.03] m-3">
-            <Image src={src} alt={`Image ${index + 1}`} className="w-full h-full object-cover" />
-          </div>
-        ))}
+       {images.map((src, index) => (
+        <div
+         key={index}
+         className="w-40 h-40 border rounded-lg overflow-hidden shadow-md p-1 m-3"
+        >
+         <Image
+           src={src}
+           alt={`Image ${index + 1}`}
+           width={160} // 40rem = 160px
+           height={160} // 40rem = 160px
+           className="w-full h-full object-cover"
+         />
+        </div>
+       ))}
+
       </div>
     </div>
     </>

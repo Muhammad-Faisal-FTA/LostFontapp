@@ -8,15 +8,16 @@ import {
   IconBrandGoogle,
   IconBrandOnlyfans,
 } from "@tabler/icons-react";
+import Link from "next/link";
 
 export default function SignIn() {
   // from data object
   const [formData, setFormData] = useState({
-    name: "",
+    
     email: "",
     phonenumber: "+92 ",
     password: "",
-    confirmpassword: ""
+    
   });
   // validation
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -29,16 +30,11 @@ export default function SignIn() {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // password conformation...
-    if (formData.password !== formData.confirmpassword) {
-      alert("Passwords do not match");
-      return;
+    if (formData.password && formData.email) {
+      console.log("Form submitted");
+      alert("sign up success! "+formData.email);
+      alert("sign up success! "+formData.password);
     }
-    console.log("Form submitted");
-    alert("sign up success! "+formData.name);
-    alert("sign up success! "+formData.email);
-    alert("sign up success! "+formData.phonenumber);
-    alert("sign up success! "+formData.password);
-    alert("sign up success! "+formData.confirmpassword);
   };
   return (
     <div className="max-w-md w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-input bg-white dark:bg-black">
@@ -50,37 +46,46 @@ export default function SignIn() {
         yet
       </p> */}
 
-      <form className="my-8" onSubmit={handleSubmit}>
-{/* Name */}
-          <LabelInputContainer>
-            <Label htmlFor="firstname">First name</Label>
-            <Input id="firstname" placeholder="Tyler" type="text" />
-          </LabelInputContainer>
-          
+      <form className="my-4" onSubmit={handleSubmit}>
 {/* Email */}
         <LabelInputContainer className="mb-4">
           <Label htmlFor="email">Email Address</Label>
-          <Input id="email" placeholder="yourEmail@gmail.com" type="email" />
+          <Input id="email" placeholder="yourEmail@gmail.com" type="email" 
+           onChange={(e) => {
+            setFormData({
+              ...formData, // Keep existing values
+              email: e.target.value, // Update the "email" field
+            });
+          }}
+          />
         </LabelInputContainer>
 {/* Password */}
         <LabelInputContainer className="mb-4">
           <Label htmlFor="password">Password</Label>
-          <Input id="password" placeholder="••••••••" type="password" />
+          <Input id="password" placeholder="••••••••" type="password" 
+           onChange={(e) => {
+            setFormData({
+              ...formData, // Keep existing values
+              password: e.target.value, // Update the "password" field
+            });
+          }}
+          />
         </LabelInputContainer>
         
+        {/* forgetPassword */}
+         <Link href={'/reset-Password'} className="text-[0.8rem] text-blue-600 flex justify-end m-2 underline" >forget password?</Link>
 
         <button
-          className="bg-gradient-to-br relative group/btn from-black dark:from-zinc-900 dark:to-zinc-900 to-neutral-600 block dark:bg-zinc-800 w-full text-white rounded-md h-10 font-medium shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset]"
+          className="mt-1 bg-gradient-to-br relative group/btn from-black dark:from-zinc-900 dark:to-zinc-900 to-neutral-600 block dark:bg-zinc-800 w-full text-white rounded-md h-10 font-medium shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset]"
           type="submit"
         >
           Sign in &rarr;
           <BottomGradient />
         </button>
-
         <div className="bg-gradient-to-r from-transparent via-neutral-300 dark:via-neutral-700 to-transparent my-8 h-[1px] w-full" />
 
         <div className="flex flex-col space-y-4">
-          <button
+          {/* <button
             className=" relative group/btn flex space-x-2 items-center justify-center px-4 w-full text-black rounded-md h-10 font-medium shadow-input bg-gray-50 dark:bg-zinc-900 dark:shadow-[0px_0px_1px_1px_var(--neutral-800)]"
             type="submit"
           >
@@ -89,9 +94,9 @@ export default function SignIn() {
               GitHub
             </span>
             <BottomGradient />
-          </button>
+          </button> */}
           <button
-            className=" relative group/btn flex space-x-2 items-center justify-start px-4 w-full text-black rounded-md h-10 font-medium shadow-input bg-gray-50 dark:bg-zinc-900 dark:shadow-[0px_0px_1px_1px_var(--neutral-800)]"
+            className=" relative group/btn flex space-x-2 items-center justify-center px-4 w-full text-black rounded-md h-10 font-medium shadow-input bg-gray-50 dark:bg-zinc-900 dark:shadow-[0px_0px_1px_1px_var(--neutral-800)]"
             type="submit"
           >
             <IconBrandGoogle className="h-4 w-4 text-neutral-800 dark:text-neutral-300" />
@@ -101,7 +106,7 @@ export default function SignIn() {
             <BottomGradient />
           </button>
           <button
-            className=" relative group/btn flex space-x-2 items-center justify-start px-4 w-full text-black rounded-md h-10 font-medium shadow-input bg-gray-50 dark:bg-zinc-900 dark:shadow-[0px_0px_1px_1px_var(--neutral-800)]"
+            className=" relative group/btn flex space-x-2 items-center justify-center px-4 w-full text-black rounded-md h-10 font-medium shadow-input bg-gray-50 dark:bg-zinc-900 dark:shadow-[0px_0px_1px_1px_var(--neutral-800)]"
             type="submit"
           >
             <IconBrandOnlyfans className="h-4 w-4 text-neutral-800 dark:text-neutral-300" />
@@ -111,6 +116,13 @@ export default function SignIn() {
             <BottomGradient />
           </button>
         </div>
+         <span className="text-[1rem] flex justify-center items-center  mt-3 p-1 ">
+          Don&apos;t have an account? 
+          <Link href={'/sign-Up'}
+            className="text-[1rem] text-blue-600  underline">
+              Sign up
+          </Link>
+        </span>
       </form>
     </div>
   );
