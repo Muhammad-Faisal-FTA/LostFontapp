@@ -1,11 +1,11 @@
 import React from 'react'
 
-const FoundPost = () => {
+const page = () => {
   return (
     <div>
-      Post the Found items.
+      post find
     </div>
   )
 }
 
-export default FoundPost
+export default page

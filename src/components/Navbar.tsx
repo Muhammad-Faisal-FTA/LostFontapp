@@ -21,23 +21,23 @@ const Navbar = ({className }: { className?: string }) => {
         </div>
         {/* Navbar items */}
         <div className="w-[60%]  flex p-5 px-[1rem] justify-around  items-center ">
-       <Link href={'/'}>
+       <Link href={'/lost-item'}>
        <MenuItem setActive={setActive} active={active} item="Lost"></MenuItem>
        </Link> 
 
-       <Link href={'lost-item'}>
+       <Link href={'/post-lost'}>
        <MenuItem setActive={setActive} active={active} item="ReportLost"></MenuItem>
        </Link> 
 
-       <Link href={'/'}>
+       <Link href={'/found-item'}>
        <MenuItem setActive={setActive} active={active} item="Found"></MenuItem>
        </Link> 
 
-       <Link href={'found-item'}>
+       <Link href={'post-find'}>
        <MenuItem setActive={setActive} active={active} item="ReportFound"></MenuItem>
        </Link> 
        
-       <Link href={'profile'}>
+       <Link href={'/profile'}>
        <MenuItem setActive={setActive} active={active} item="Profile"></MenuItem>
        </Link> 
        
