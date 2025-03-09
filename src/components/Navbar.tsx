@@ -75,7 +75,7 @@ export default function Navbar() {
               Login
             </Link>
             <Link href="/sign-out" className="px-4 py-2 bg-blue-500 text-white rounded-lg" onClick={() => setIsOpen(false)}>
-              Sign Out
+              Sign In
             </Link>
           </nav>
         )}
