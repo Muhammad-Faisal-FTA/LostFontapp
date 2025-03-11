@@ -132,7 +132,7 @@ interface ItemFormInputs {
   photo: FileList;
 }
 
-const ItemForm = () => {
+const FormLost = () => {
   const { register, handleSubmit, formState: { errors } } = useForm<ItemFormInputs>();
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
@@ -182,7 +182,7 @@ const ItemForm = () => {
 
   return (
     <div className="max-w-lg mx-auto p-6 bg-white shadow-lg rounded-lg mt-10">
-      <h2 className="text-2xl font-bold mb-4 text-center">Post an Item</h2>
+      <h2 className="text-2xl font-bold mb-4 text-center">Post an Item </h2>
       {message && <p className="text-center text-green-500 mb-4">{message}</p>}
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4" encType="multipart/form-data">
         <div>
@@ -271,4 +271,4 @@ const ItemForm = () => {
   );
 };
 
-export default ItemForm;
+export default FormLost;
