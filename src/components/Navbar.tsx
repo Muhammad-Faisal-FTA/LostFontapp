@@ -42,11 +42,11 @@ export default function Navbar() {
                 {item.name}
               </Link>
             ))}
-            <Link href="/login" className="px-4 py-2 text-blue-500 font-medium">
+            <Link href="/sign-In" className="px-4 py-2 text-blue-500 font-medium">
               Login
             </Link>
-            <Link href="/sign-out" className="px-4 py-2 bg-blue-500 text-white rounded-lg">
-              Sign Out
+            <Link href="/sign-Up" className="px-4 py-2 bg-blue-500 text-white rounded-lg">
+              Sign Up
             </Link>
           </nav>
 
@@ -71,10 +71,10 @@ export default function Navbar() {
                 {item.name}
               </Link>
             ))}
-            <Link href="/login" className="px-4 py-2 text-blue-500" onClick={() => setIsOpen(false)}>
+            <Link href="/sign-In" className="px-4 py-2 text-blue-500" onClick={() => setIsOpen(false)}>
               Login
             </Link>
-            <Link href="/sign-out" className="px-4 py-2 bg-blue-500 text-white rounded-lg" onClick={() => setIsOpen(false)}>
+            <Link href="/sign-Up" className="px-4 py-2 bg-blue-500 text-white rounded-lg" onClick={() => setIsOpen(false)}>
               Sign In
             </Link>
           </nav>

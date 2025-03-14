@@ -54,9 +54,9 @@ export default function Home() {
          <Image
            src={src}
            alt={`Image ${index + 1}`}
-           width={160} // 40rem = 160px
-           height={160} // 40rem = 160px
-           className="w-full h-full object-cover"
+           width={162} // 40rem = 160px
+           height={162} // 40rem = 160px
+           className="w-full h-full rounded-[0.5rem] object-cover"
          />
         </div>
        ))}
