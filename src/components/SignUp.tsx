@@ -37,7 +37,7 @@ export default  function SignUp() {
     alert("sign up success! "+formData.confirmpassword);
   };
   return (
-    <div className="max-w-md w-full mx-auto h-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-input bg-white dark:bg-black">
+    <div className="max-w-md w-full mx-auto h-auto rounded-lg md:rounded-2xl p-4 md:p-8 shadow-input bg-white dark:bg-black">
       <h2 className="font-bold text-xl text-neutral-800 dark:text-neutral-200">
         Sign Up
       </h2>
@@ -48,7 +48,7 @@ export default  function SignUp() {
 
       <form className="my-6" onSubmit={handleSubmit}>
  {/* Name */}
-          <LabelInputContainer>
+          <LabelInputContainer className="mb-4">
             <Label htmlFor="name">Name</Label>
             <Input id="name" placeholder="your name" type="text" 
              onChange={(e) => {
@@ -125,7 +125,7 @@ export default  function SignUp() {
           <BottomGradient />
         </button >
         <div className='text-center m-2 p-3' >
-         <p>Have already an account? <Link href={'/sign-In'} className='text-blue-700 underline'>SignIn</Link> </p>
+         <p>Have already an account? <Link href={'/sign-In'} className='text-blue-700 underline'>LogIn</Link> </p>
         </div>
         
       </form>

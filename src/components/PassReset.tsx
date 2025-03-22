@@ -4,6 +4,7 @@ import { Label } from "./ui/label";
 import { Input } from "./ui/input";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+import { CloudCog } from "lucide-react";
 
 export default function ResetPassword() {
   const [formData, setFormData] = useState({
@@ -20,7 +21,7 @@ export default function ResetPassword() {
       [id]: value,
     }));
   };
-
+  
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (formData.newPassword === formData.confirmPassword && formData.email) {
@@ -29,8 +30,9 @@ export default function ResetPassword() {
   };
 
   return (
-    <div className="max-w-md w-full mx-auto p-4 md:p-8 bg-white shadow-md rounded-lg">
+    <div className="max-w-md h-[100%] w-full mx-auto p-4 md:p-8 bg-white shadow-md rounded-lg">
       <h2 className="font-bold text-2xl text-center text-gray-800">Reset Password</h2>
+      {/* Form for input , resat/forget password */}
        <form className="mt-6" onSubmit={handleSubmit}>
 {/* Email */}
 <LabelInputContainer>

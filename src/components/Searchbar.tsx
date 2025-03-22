@@ -14,7 +14,7 @@ const Searchbar = () => {
         }
       };
   return (
-    <div className='w-[40%] bg-red-500'>
+    <div className='w-[100%] md:w-[40%'>
       <form className="max-w-md mx-auto" onSubmit={handleSubmit}>   
        <label htmlFor="default-search" className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
        <div className="relative">

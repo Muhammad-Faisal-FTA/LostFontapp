@@ -45,7 +45,7 @@ export default function Home() {
       </Link>
       </div> 
       {/* landing page images */}
-      <div className="w-50% h-auto flex  justify-center flex-wrap  mx-[4rem] mt-3 mb-8  p-4">
+      <div className="w-50% h-auto flex justify-center flex-wrap mt-2  md:mx-[4rem] md:mt-3 md:mb-8  md:p-4">
        {images.map((src, index) => (
         <div
          key={index}

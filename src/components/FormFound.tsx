@@ -63,7 +63,7 @@ const FormFound = () => {
     };
   
     return (
-      <div className="max-w-lg mx-auto p-6 bg-white shadow-lg rounded-lg mt-10">
+      <div className="max-w-lg mx-auto p-3 bg-white shadow-lg rounded-lg mt-10">
         <h2 className="text-2xl font-bold mb-4 text-center">Post an Item</h2>
         {message && <p className="text-center text-green-500 mb-4">{message}</p>}
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4" encType="multipart/form-data">
@@ -135,7 +135,7 @@ const FormFound = () => {
             className="w-full bg-blue-600 text-white p-2 rounded-lg hover:bg-blue-700 transition disabled:opacity-50"
             disabled={loading}
           >
-            {loading ? 'Posting...' : 'Post Item'}
+            {loading ? 'Posting...' : 'Post Found Item'} {/*Post button text on condition */}
           </button>
         </form>
   

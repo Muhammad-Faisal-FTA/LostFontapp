@@ -22,9 +22,9 @@ const SigninPage = () => {
 
 // Sign In page
   return (
-    <div className='w-[98%] h-full  flex justify-around items-center p-2'>
+    <div className='w-[98%] h-[100vh]  flex justify-center md:justify-around items-center p-2'>
       {/* Left section */}
-      <div className='w-[60%] h-full flex flex-col justify-center items-center ml-3 mt-0'>
+      <div className='w-[60%] h-full hidden md:block flex-col justify-center items-center ml-3 mt-0'>
         {/* page heading */}
         <h1 className='w-[100%] h-full text-[3.125rem] leading-1 fount-sarabun font-[700] p-2 pl-7 m-2'>
          Welcome to   <br />      
@@ -47,15 +47,15 @@ const SigninPage = () => {
       </div>
 
        {/* <span></span> */}
-       <div className='w-[25rem] h-[18.75rem] mb-2 items-center ml-0 mt-[2rem]'>
+       <div className='w-[15rem] h-[13.75rem] mb-2 items-center ml-0 mt-[2rem]'>
          <Image src={signinImg} alt="page image"  
-          width={400} 
-          height={300} 
+          width={250} 
+          height={250} 
           className="" />
         </div> 
       </div>
       {/* Right section */}
-      <div className='w-[40%] h-full items-center'>
+      <div className='w-[100%] h-[80%] md:w-[40%] p-4 items-center'>
       <SignIn />
       </div>
     </div>

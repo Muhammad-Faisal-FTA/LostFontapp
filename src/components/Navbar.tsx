@@ -25,8 +25,12 @@ export default function Navbar() {
         <div className="flex justify-between items-center py-1">
           {/* Logo */}
           <div className="flex items-center">
+          <Link href={'/'}>
             <Image src={logo} width={100} height={90} alt="Lost & Found"  />
+          </Link>
+          <Link href={'/'}>
             <h1 className="text-3xl font-bold ml-2">Lost & Found</h1>
+          </Link>  
           </div>
 
           {/* Desktop Menu */}
@@ -45,7 +49,7 @@ export default function Navbar() {
             <Link href="/sign-In" className="px-4 py-2 text-blue-500 font-medium">
               Login
             </Link>
-            <Link href="/sign-Up" className="px-4 py-2 bg-blue-500 text-white rounded-lg">
+            <Link href="/sign-Up" className="text-center px-4 py-2 bg-blue-500 text-white rounded-lg">
               Sign Up
             </Link>
           </nav>

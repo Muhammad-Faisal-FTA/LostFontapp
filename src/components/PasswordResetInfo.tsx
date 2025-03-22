@@ -1,5 +1,5 @@
 import React from "react";
-
+//   ! useless component....
 const PasswordResetInfo: React.FC = () => {
   return (
     <div className="bg-white p-6 rounded-lg shadow-lg max-w-lg w-full mx-auto md:max-w-2xl lg:max-w-3xl">
