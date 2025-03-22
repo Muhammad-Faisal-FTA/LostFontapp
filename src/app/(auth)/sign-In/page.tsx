@@ -3,6 +3,7 @@ import React ,{useState,useEffect} from 'react'
 import Image from  'next/image';
 import SignIn from '@/components/SignIn'
 import signinImg from '@/constants/SigninImg.png'
+// import { div } from 'motion/react-client';
 const SigninPage = () => {
   // ======================================================
   // Loader
@@ -24,17 +25,17 @@ const SigninPage = () => {
   return (
     <div className='w-[98%] h-[100vh]  flex justify-center md:justify-around items-center p-2'>
       {/* Left section */}
-      <div className='w-[60%] h-full hidden md:block flex-col justify-center items-center ml-3 mt-0'>
+      <div className='w-[60%] h-full  hidden md:block flex-col justify-center items-center ml-1 '>
         {/* page heading */}
-        <h1 className='w-[100%] h-full text-[3.125rem] leading-1 fount-sarabun font-[700] p-2 pl-7 m-2'>
+        <h1 className='w-[100%]  text-[3.125rem] leading-1 fount-sarabun font-[700] p-2 pl-7 m-2'>
          Welcome to   <br />      
         <span className='w-[80%] h-auto text-[3.7rem] fount-sarabun font-[700] ' >
           [Lost & Found Website]
         </span>
         </h1>
       {/* page discriptions */}
-      <div  className="w-[100%] h-auto text-black ">
-      <p className="w-[80%] h-auto text-black m-2 p-2 pl-7 ">
+      <div  className="w-[100%]  text-black">
+      <p className="w-[80%] h-auto text-black m-1 p-2">
         We&apos;re here to help you find and recover your lost items with ease. Report lost belongings, search for found items, and connect with others on our user-friendly platform.  
         <br />
         Our goal is to reunite you with your possessions quickly and efficiently.  

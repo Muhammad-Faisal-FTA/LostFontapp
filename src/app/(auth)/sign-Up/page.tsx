@@ -41,7 +41,7 @@ const SignupPage = () => {
           </p>
         </div>
 
-        <div className="w-[15rem] h-[13.75rem] mb-2 items-center ml-auto mt-[2rem]">
+        <div className="w-[15rem] h-[13.75rem] mb-2 items-center mt-[2rem]">
           <Image src={signupImg} alt="page image" width={250} height={250} className="flex justify-center items-center" />
         </div> 
       </div>
