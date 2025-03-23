@@ -6,7 +6,8 @@ import PassresetImage from '@/constants/signupImg.png'
 // import PasswordResetInfo  from '@/components/PasswordResetInfo'
 const ResetPassword = () => {
   return (
-    <div className='w-full  flex justify-around items-center'>
+    <div className='w-full  flex justify-around items-center
+    bg-Auth bg-cover bg-repeat'>
        {/* Left Section */}
        <div className="w-[50%] hidden md:block h-full flex-col justify-center items-center">
         <div className="w-full h-full">

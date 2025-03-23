@@ -20,6 +20,9 @@ const config: Config = {
       backgroundImage: {
         bgItems:"url('/bgFountItems.png')",
         Landing:"url('/landingBackground.jpg')",
+        Report:"url('/bgReportform.jpg')",
+        Profile:"url('/bgProfile.jpg')",
+        Auth:"url('/bgauth.jpg')",
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
         'gradient-conic':
           'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',

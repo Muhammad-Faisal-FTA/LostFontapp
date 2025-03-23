@@ -17,16 +17,18 @@
 }
 
 body {
-  height: 100%;
-  color: rgb(var(--foreground-rgb));
+  /* background: red; */
+   height: 100%;
+  /* color: rgb(var(--foreground-rgb));
   background: url("landingBackground.jpg");
   background-size: cover;
   background-position: center;
-  background-repeat: no-repeat;
+  background-repeat: no-repeat; */
   /* background: linear-gradient(
       to bottom,
       transparent,
       rgb(var(--background-end-rgb))
     )
     rgb(var(--background-start-rgb)); */
+    
 }

@@ -23,7 +23,8 @@ const SignupPage = () => {
 
 // Sign Up page
   return (
-    <div className="w-full h-full  p-1 flex justify-center md:justify-around items-center">
+    <div className="w-full h-full  p-1 bg-Auth bg-cover bg-repeat
+    flex justify-center md:justify-around items-center">
       {/* Left Section */}
       <div className="w-[50%] h-full p-2 m-1 hidden md:block flex-col justify-center items-center">
         <div className="w-full h-full ">

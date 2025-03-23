@@ -21,10 +21,10 @@ export default function Home() {
   return (
     <>
     <div 
-     className='w-full h-100% text-center bg-Landing bg-cover bg-repeat'
+     className='w-full h-full text-center bg-Landing bg-cover bg-repeat'
     >
       <h1
-       className="text-[3.5rem] text-[#032754] font-bold mt-10"
+       className="text-[2.5rem] md:text-[3.5rem] text-[#032754] font-bold pt-10"
       >Find & Recover with <span
        className='bg-gradient-to-r from-blue-500 via-indigo-600 to-indigo-800 bg-clip-text text-transparent'
       >Ease</span></h1>
@@ -49,7 +49,7 @@ export default function Home() {
        {images.map((src, index) => (
         <div
          key={index}
-         className="w-40 h-40 border rounded-lg overflow-hidden shadow-md p-1 m-3"
+         className="w-40 h-full border rounded-lg overflow-hidden shadow-md p-1 m-3"
         >
          <Image
            src={src}

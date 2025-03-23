@@ -23,7 +23,8 @@ const SigninPage = () => {
 
 // Sign In page
   return (
-    <div className='w-[98%] h-[100vh]  flex justify-center md:justify-around items-center p-2'>
+    <div className='w-[100%] h-[100vh]  bg-Auth bg-cover bg-repeat
+    flex justify-center md:justify-around items-center p-2'>
       {/* Left section */}
       <div className='w-[60%] h-full  hidden md:block flex-col justify-center items-center ml-1 '>
         {/* page heading */}
