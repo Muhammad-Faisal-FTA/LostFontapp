@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import SignUp from '@/components/SignUp';
 import Image from 'next/image';
 import signupImg from '@/constants/signupImg.png';
+import Loader from '@/app/circle-9360.gif'
 
 const SignupPage = () => {
 // ======================================================
@@ -14,9 +15,9 @@ const SignupPage = () => {
 
   if(!loading){
     return(
-    <>
-      <h1>Loading...</h1>
-    </>
+    <div className='w-[100vw] h-[100vh]  flex justify-center items-center '>
+     <Image src={Loader} alt="Loading...wait" width={200} height={200} className="" />
+    </div>
     );
   }
 // ==========================================================

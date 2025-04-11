@@ -7,44 +7,75 @@ import { cn } from "@/lib/utils";
 
 export default  function SignUp() {
   // from data object
-  const [formData, setFormData] = useState({
+  interface FormDataType {
+    name: string;
+    email: string;
+    phonenumber: string;
+    password: string;
+    profileImage: File | null;
+  }
+  const [formData, setFormData] = useState<FormDataType>({
     name: "",
     email: "",
-    phonenumber: "+92 ",
+    phonenumber: "",
     password: "",
-    confirmpassword: ""
+    profileImage: null 
   });
+  let [otp, setOtp] = useState(0);
+
   // validation
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { id, value } = e.target;
-    setFormData(prevState => ({
-      ...prevState,
-      [id]: value
-    }));
-  };
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  // const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const { id, value } = e.target;
+  //   setFormData(prevState => ({
+  //     ...prevState,
+  //     [id]: value
+  //   }));
+  // };
+  // Form submission
+  // ===========================================================================
+  // const BaseUrl = process.BASE_URL;
+
+
+  const handleSubmit = async  (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // password conformation...
-    if (formData.password !== formData.confirmpassword) {
-      alert("Passwords do not match");
-      return;
+    const formToSend = new FormData();
+    formToSend.append("name", formData.name);
+    formToSend.append("email", formData.email);
+    formToSend.append("phonenumber", formData.phonenumber);
+    formToSend.append("password", formData.password);
+    if (formData.profileImage) {
+      formToSend.append("profileImage", formData.profileImage);
     }
-    console.log("Form submitted");
-    alert("sign up success! "+formData.name);
-    alert("sign up success! "+formData.email);
-    alert("sign up success! "+formData.phonenumber);
-    alert("sign up success! "+formData.password);
-    alert("sign up success! "+formData.confirmpassword);
+
+    formToSend.forEach((value, key) => {
+      console.log(key, value);
+    });
+  //  post the data
+    try {
+      const response = await fetch("https://lost-and-found-backend-eosin.vercel.app/api/v1/user/register", {
+        method: "POST",
+        // headers: { "Content-Type": "application/json" },
+        // body: JSON.stringify(formData),
+        body: formToSend,
+        credentials: 'include', // <--- IMPORTANT
+      });
+      
+      
+
+      const data = await response.json();
+      console.log(data.message);
+    } catch (error) {
+      console.log("Registration failed. Try again.");
+    }
   };
+
+
+
   return (
     <div className="max-w-md w-full mx-auto h-auto rounded-lg md:rounded-2xl p-4 md:p-8 shadow-input bg-white dark:bg-black">
       <h2 className="font-bold text-xl text-neutral-800 dark:text-neutral-200">
         Sign Up
       </h2>
-      {/* <p className="text-neutral-600 text-sm max-w-sm mt-2 dark:text-neutral-300">
-        Login to aceternity if you can because we don&apos;t have a login flow
-        yet
-      </p> */}
 
       <form className="my-6" onSubmit={handleSubmit}>
  {/* Name */}
@@ -100,21 +131,22 @@ export default  function SignUp() {
           />
         </LabelInputContainer>
 
-{/* Conform password */}
+{/* Profile Image */}
         <LabelInputContainer className="mb-8">
-          <Label htmlFor="conformpassword">Conform Password</Label>
-          <Input
-            id="conformpassword"
-            placeholder="••••••••"
-            type="password"
-            onChange={(e) => {
-              setFormData({
-                ...formData, // Keep existing values
-                confirmpassword: e.target.value, // Update the "confirmpassword" field
-              });
-            }}
-          />
-        </LabelInputContainer>
+        <Label htmlFor="profileImage">Profile Image</Label>
+        <Input
+         id="profileImage"
+          type="file"
+           accept="image/*"
+           onChange={(e) => {
+             const file = e.target.files?.[0] || null;
+               setFormData({
+               ...formData,
+               profileImage: file,
+             });
+           }}
+         />
+         </LabelInputContainer>
 
 {/* Submit button */}
         <button
@@ -155,3 +187,4 @@ const LabelInputContainer = ({
     </div>
   );
 };
+// OTP UI

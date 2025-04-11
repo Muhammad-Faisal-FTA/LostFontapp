@@ -3,23 +3,25 @@ import React ,{useState,useEffect} from 'react'
 import Image from  'next/image';
 import SignIn from '@/components/SignIn'
 import signinImg from '@/constants/SigninImg.png'
+import Loader from '@/app/circle-9360.gif'
+
 // import { div } from 'motion/react-client';
 const SigninPage = () => {
-  // ======================================================
-  // Loader
-  const [loading, setLoading] = useState(false);
-  useEffect(()=>{
-   setLoading(true);
-  }, [])
-
-  if(!loading){
-    return(
-    <>
-      <h1>Loading...</h1>
-    </>
-    );
-  }
-// ==========================================================
+ // ======================================================
+   // Loader
+   const [loading, setLoading] = useState(false);
+   useEffect(()=>{
+    setLoading(true);
+   }, [])
+ 
+   if(!loading){
+     return(
+     <div className='w-[100vw] h-[100vh]  flex justify-center items-center '>
+      <Image src={Loader} alt="Loading...wait" width={200} height={200} className="" />
+     </div>
+     );
+   }
+ // ==========================================================
 
 // Sign In page
   return (

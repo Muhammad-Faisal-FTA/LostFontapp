@@ -34,8 +34,8 @@ const ItemCard: React.FC<ItemCardProps> = ({
       </div>
   
       {/* Image Section */}
-      <div className="w-full h-32 bg-gray-200 flex justify-center items-center">
-        <Image className="w-full h-40 object-cover py-3 rounded-md" width={200} height={15} src={imageUrl} alt={itemName} />
+      <div className="w-full h-[16rem] bg-gray-200 flex justify-center items-center">
+        <Image className="w-full h-[16rem] object-fill p-2 rounded-md" width={200} height={150} src={imageUrl} alt={title} />
       </div>
   
       {/* Content Section */}

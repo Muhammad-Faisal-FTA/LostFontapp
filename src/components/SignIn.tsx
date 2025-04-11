@@ -26,13 +26,27 @@ export default function SignIn() {
       [id]: value
     }));
   };
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // password conformation...
     if (formData.password && formData.email) {
       console.log("Form submitted");
       alert("sign up success! "+formData.email);
       alert("sign up success! "+formData.password);
+    }
+    try {
+      const response = await fetch("api/v1/user/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+      console.log(data.message);
+      // alert(data.message);
+    } catch (error) {
+      console.log("Registration failed. Try again.");
+      // alert("Login failed. Try again.");
     }
   };
   return (

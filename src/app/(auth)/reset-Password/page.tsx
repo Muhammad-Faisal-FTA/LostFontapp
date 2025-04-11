@@ -1,10 +1,28 @@
 "use client"
 import React from 'react'
+import { useState, useEffect } from 'react'
 import PassReset  from '@/components/PassReset'
 import Image  from 'next/image'
 import PassresetImage from '@/constants/signupImg.png'
+import Loader from '@/app/circle-9360.gif'
+
 // import PasswordResetInfo  from '@/components/PasswordResetInfo'
 const ResetPassword = () => {
+   // ======================================================
+     // Loader
+     const [loading, setLoading] = useState(false);
+     useEffect(()=>{
+      setLoading(true);
+     }, [])
+   
+     if(!loading){
+       return(
+       <div className='w-[100vw] h-[100vh]  flex justify-center items-center '>
+        <Image src={Loader} alt="Loading...wait" width={200} height={200} className="" />
+       </div>
+       );
+     }
+   // ==========================================================
   return (
     <div className='w-full  flex justify-around items-center
     bg-Auth bg-cover bg-repeat'>
