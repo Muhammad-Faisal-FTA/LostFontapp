@@ -15,14 +15,14 @@ export default  function SignUp() {
     email: string;
     phoneNumber: string;
     password: string;
-    profileImage: File | null;
+    // profileImage: File | null;
   }
   const [formData, setFormData] = useState<FormDataType>({
     name: "",
     email: "",
     phoneNumber: "",
     password: "",
-    profileImage: null 
+    // profileImage: null 
   });
   // 
   const [otp, setOtp] = useState<string>(""); //  OTP state
@@ -46,9 +46,9 @@ export default  function SignUp() {
     formToSend.append("email", formData.email);
     formToSend.append("phoneNumber", formData.phoneNumber);
     formToSend.append("password", formData.password);
-    if (formData.profileImage) {
-      formToSend.append("profileImage", formData.profileImage);
-    }
+    // if (formData.profileImage) {
+    //   formToSend.append("profileImage", formData.profileImage);
+    // }
 
     formToSend.forEach((value, key) => {//consoling...
       console.log(key, value);
@@ -146,7 +146,7 @@ export default  function SignUp() {
         </LabelInputContainer>
 
 {/* Profile Image */}
-        <LabelInputContainer className="mb-8">
+        {/* <LabelInputContainer className="mb-8">
         <Label htmlFor="profileImage">Profile Image</Label>
         <Input
          id="profileImage"
@@ -160,7 +160,7 @@ export default  function SignUp() {
              });
            }}
          />
-         </LabelInputContainer>
+         </LabelInputContainer> */}
 
 {/* Submit button */}
         <button
