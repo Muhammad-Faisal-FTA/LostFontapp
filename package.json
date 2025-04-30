@@ -9,9 +9,11 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@heroui/input-otp": "^2.1.16",
+    "@heroui/react": "^2.7.6",
     "@radix-ui/react-label": "^2.1.2",
     "@tabler/icons-react": "^3.30.0",
-    "axios": "^1.8.2",
+    "axios": "^1.8.4",
     "clsx": "^2.1.1",
     "lucide-react": "^0.479.0",
     "motion": "^12.4.7",

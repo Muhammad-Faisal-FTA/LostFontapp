@@ -1,11 +1,17 @@
 "use client";
 import React, { useEffect, useState } from 'react';
 import SignUp from '@/components/SignUp';
+import SignIn from '@/components/SignIn';
 import Image from 'next/image';
 import signupImg from '@/constants/signupImg.png';
 import Loader from '@/app/circle-9360.gif'
+// import { useUser } from '@/context/UserContext';
+
 
 const SignupPage = () => {
+  // const { user, setUser } = useUser(); // ✅ this line removes the warning
+
+  const [otp, setOtp] = useState(false);
 // ======================================================
   // Loader
   const [loading, setLoading] = useState(false);
@@ -20,10 +26,33 @@ const SignupPage = () => {
     </div>
     );
   }
+
 // ==========================================================
 
 // Sign Up page
   return (
+    <>
+     {/* <div>
+      <h1>Profile Page</h1>
+      {user ? (
+        <div>
+          <p>Name: {user.name}</p>
+          <p>Email: {user.email}</p>
+        </div>
+      ) : (
+        <button
+          onClick={() =>
+            setUser({ name: 'John Doe', email: 'john@example.com' })
+          }
+        >
+          Set User
+        </button>
+      )}
+    </div> */}
+      {/* Toggle based on OTP */}
+      <div className={otp ? 'block' : 'hidden'}>
+        <SignIn />
+      </div>
     <div className="w-full h-full  p-1 bg-Auth bg-cover bg-repeat
     flex justify-center md:justify-around items-center">
       {/* Left Section */}
@@ -53,7 +82,12 @@ const SignupPage = () => {
         <SignUp />
       </div>
     </div>
+    </>
   );
 };
 
 export default SignupPage;
+
+function usea(): [any, any] {
+  throw new Error('Function not implemented.');
+}

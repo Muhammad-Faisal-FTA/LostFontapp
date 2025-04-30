@@ -4,21 +4,53 @@ import { useState } from 'react';
 
 export default function Profile() {
   const [isEditing, setIsEditing] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [profile, setProfile] = useState({
     name: 'John Doe',
     idNumber: '123456',
     faculty: 'Engineering',
     contactNumber: '123-456-7890',
   });
-  // console.log(profile.name);
-  // console.log(profile.faculty);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setProfile({ ...profile, [e.target.name]: e.target.value });
   };
 
+  const isAnyFieldEmpty = Object.values(profile).some((value) => value.trim() === '');
+
+  const handleSubmit = async () => {
+    if (isAnyFieldEmpty) return;
+
+    setIsLoading(true);
+
+    try {
+      const response = await fetch('https://lost-and-found-backend-eosin.vercel.app/api/v1/user/edit-profile', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          // 'Authorization': `Bearer ${token}`, // if needed
+        },
+        body: JSON.stringify(profile),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to update profile');
+      }
+
+      const data = await response.json();
+      console.log('Profile updated:', data);
+      alert('✅ Profile updated successfully!');
+      setIsEditing(false);
+    } catch (error) {
+      console.error(error);
+      alert('❌ Failed to update profile');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
-    <div className="max-w-sm mx-auto bg-white p-6 rounded-lg shadow-md border mt-2">
+    <div className="max-w-sm mx-auto bg-white p-6 rounded-lg shadow-md border mt-4">
       <div className="flex flex-col items-center">
         <div className="w-20 h-20 bg-gray-200 rounded-full flex items-center justify-center mb-4">
           <svg
@@ -34,9 +66,10 @@ export default function Profile() {
             />
           </svg>
         </div>
+
         <div className="w-full">
           {['name', 'idNumber', 'faculty', 'contactNumber'].map((field) => (
-            <div key={field} className="mb-2">
+            <div key={field} className="mb-3">
               <label className="block text-sm font-medium text-gray-700 capitalize">
                 {field.replace(/([A-Z])/g, ' $1')}
               </label>
@@ -52,11 +85,15 @@ export default function Profile() {
               />
             </div>
           ))}
+
           <button
-            onClick={() => setIsEditing(!isEditing)}
-            className="w-full mt-4 bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition"
+            onClick={isEditing ? handleSubmit : () => setIsEditing(true)}
+            disabled={isEditing && (isAnyFieldEmpty || isLoading)}
+            className={`w-full mt-4 py-2 rounded-md text-white transition 
+              ${isEditing ? (isAnyFieldEmpty || isLoading ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-500 hover:bg-blue-600') 
+                          : 'bg-blue-500 hover:bg-blue-600'}`}
           >
-            {isEditing ? 'Save Profile' : 'Edit Profile'}
+            {isLoading ? 'Saving...' : isEditing ? 'Save Profile' : 'Edit Profile'}
           </button>
         </div>
       </div>

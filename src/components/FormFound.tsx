@@ -23,29 +23,29 @@ const FormFound = () => {
       setLoading(true);
       setMessage('');
       
-      // const formData = new FormData();
-      // formData.append('name', data.name);
-      // formData.append('item', data.item);
-      // formData.append('location', data.location);
-      // formData.append('date', data.date);
-      // formData.append('description', data.description);
-      // if (data.photo.length > 0) {
-      //   formData.append('photo', data.photo[0]);
-      // }
-  
+      const formData = new FormData();
+      formData.append('name', data.name);
+      formData.append('item', data.item);
+      formData.append('location', data.location);
+      formData.append('date', data.date);
+      formData.append('description', data.description);
+      if (data.photo.length > 0) {
+        formData.append('photo', data.photo[0]);
+      }
+  // Post Item
       try {
-           console.log(data,"QWeqweqwrqwerwet")
-        // const response = await axios.post('https://dummyjson.com/posts', formData, {
-        //   headers: { 'Content-Type': 'multipart/form-data' },
-        // });
+          //  console.log(data,"QWeqweqwrqwerwet")
+        const response = await axios.post('https://lost-and-found-backend-eosin.vercel.app/api/v1/found-items/report-found-item', formData, {
+          headers: { 'Content-Type': 'multipart/form-data' },
+        });
         setMessage('Item posted successfully!');
-        // setItemId(response.data.id); // Assuming the response contains an ID
+        setItemId(response.data.id); // Assuming the response contains an ID
       } catch (error) {
         setMessage('Failed to post item.');
       }
       setLoading(false);
     };
-  // Delete button
+  // Delete Item/button
     const handleDelete = async () => {
       if (!itemId) return;
   
@@ -53,7 +53,7 @@ const FormFound = () => {
       setMessage('');
   
       try {
-        await axios.delete(`https://www.somthing.item/${itemId}`);
+        await axios.delete(`https://lost-and-found-backend-eosin.vercel.app/api/v1/found-items/delete-founditem/${itemId}`);
         setMessage('Item deleted successfully!');
         setItemId(null);
       } catch (error) {

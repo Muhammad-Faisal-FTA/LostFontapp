@@ -1,7 +1,10 @@
 "use client";
+// import axios from "axi/os";
+
 import React, { useState } from "react";
 import Link from 'next/link';
 import { Label } from "./ui/label";
+import OTP from "@/components/OTP";
 import { Input } from "./ui/input";
 import { cn } from "@/lib/utils";
 
@@ -10,19 +13,19 @@ export default  function SignUp() {
   interface FormDataType {
     name: string;
     email: string;
-    phonenumber: string;
+    phoneNumber: string;
     password: string;
     profileImage: File | null;
   }
   const [formData, setFormData] = useState<FormDataType>({
     name: "",
     email: "",
-    phonenumber: "",
+    phoneNumber: "",
     password: "",
     profileImage: null 
   });
-  let [otp, setOtp] = useState(0);
-
+  // 
+  const [otp, setOtp] = useState<string>(""); //  OTP state
   // validation
   // const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
   //   const { id, value } = e.target;
@@ -36,43 +39,54 @@ export default  function SignUp() {
   // const BaseUrl = process.BASE_URL;
 
 
-  const handleSubmit = async  (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async  (e: React.FormEvent<HTMLFormElement>) => {    // Handle submission
     e.preventDefault();
     const formToSend = new FormData();
     formToSend.append("name", formData.name);
     formToSend.append("email", formData.email);
-    formToSend.append("phonenumber", formData.phonenumber);
+    formToSend.append("phoneNumber", formData.phoneNumber);
     formToSend.append("password", formData.password);
     if (formData.profileImage) {
       formToSend.append("profileImage", formData.profileImage);
     }
 
-    formToSend.forEach((value, key) => {
+    formToSend.forEach((value, key) => {//consoling...
       console.log(key, value);
     });
-  //  post the data
+      setOtp("12345");// just for  ui,  this time
+  //  post the data :https://lost-and-found-backend-eosin.vercel.app/api/v1/user/register
+  // https://cors-anywhere.herokuapp.com/https://reqres.in/api/register
     try {
       const response = await fetch("https://lost-and-found-backend-eosin.vercel.app/api/v1/user/register", {
         method: "POST",
-        // headers: { "Content-Type": "application/json" },
-        // body: JSON.stringify(formData),
         body: formToSend,
         credentials: 'include', // <--- IMPORTANT
+        headers: { "Content-Type": "application/json" },
+        // body: JSON.stringify(formData),
+        
       });
-      
       
 
       const data = await response.json();
+      if (!data.ok) {
+        throw new Error(data.message || "Something went wrong.");
+      }
       console.log(data.message);
-    } catch (error) {
-      console.log("Registration failed. Try again.");
+    } catch (error: any) {
+      console.log("Registration failed:", error);
     }
   };
-
-
-
+  
+  
+  
   return (
-    <div className="max-w-md w-full mx-auto h-auto rounded-lg md:rounded-2xl p-4 md:p-8 shadow-input bg-white dark:bg-black">
+    <>
+    <div className={otp ? "block" : "hidden"}>
+        <OTP />
+    </div>
+  
+    <div className={`${otp? "display: hidden" : ""} max-w-md w-full mx-auto h-auto rounded-lg md:rounded-2xl p-4 md:p-8 shadow-input bg-white dark:bg-black`}>
+          
       <h2 className="font-bold text-xl text-neutral-800 dark:text-neutral-200">
         Sign Up
       </h2>
@@ -112,7 +126,7 @@ export default  function SignUp() {
            onChange={(e) => {
             setFormData({
               ...formData, // Keep existing values
-              phonenumber: e.target.value, // Update the "phonenumber" field
+              phoneNumber: e.target.value, // Update the "phonenumber" field
             });
           }}
           />
@@ -162,6 +176,7 @@ export default  function SignUp() {
         
       </form>
     </div>
+    </>
   );
 }
 
