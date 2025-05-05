@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import SignUp from '@/components/SignUp';
 import SignIn from '@/components/SignIn';
 import Image from 'next/image';
-import signupImg from '@/constants/signupImg.png';
+// import signupImg from '@/constant/signupImg.png';
 import Loader from '@/app/circle-9360.gif'
 // import { useUser } from '@/context/UserContext';
 
@@ -50,9 +50,9 @@ const SignupPage = () => {
       )}
     </div> */}
       {/* Toggle based on OTP */}
-      <div className={otp ? 'block' : 'hidden'}>
+      {/* <div className={otp ? 'block' : 'hidden'}>
         <SignIn />
-      </div>
+      </div> */}
     <div className="w-full h-full  p-1 bg-Auth bg-cover bg-repeat
     flex justify-center md:justify-around items-center">
       {/* Left Section */}
@@ -73,7 +73,7 @@ const SignupPage = () => {
         </div>
 
         <div className="w-[15rem] h-[13.75rem] mb-2 items-center mt-[2rem]">
-          <Image src={signupImg} alt="page image" width={250} height={250} className="flex justify-center items-center" />
+          {/* <Image src={signupImg} alt="page image" width={250} height={250} className="flex justify-center items-center" /> */}
         </div> 
       </div>
 

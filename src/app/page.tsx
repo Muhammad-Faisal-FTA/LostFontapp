@@ -45,11 +45,11 @@ export default function Home() {
       </Link>
       </div> 
       {/* landing page images */}
-      <div className="w-50% h-auto flex justify-center flex-wrap mt-2  md:mx-[4rem] md:mt-3 md:mb-8  md:p-4">
+      <div className="w-50% h-auto flex justify-center flex-wrap mt-2  md:mx-[4rem] md:mt-3 md:mb-8  md:p-4 w-full-on-small">
        {images.map((src, index) => (
         <div
          key={index}
-         className="w-40 h-full border rounded-lg overflow-hidden shadow-md p-1 m-3"
+         className="w-40 h-full border rounded-lg overflow-hidden shadow-md p-1 m-3 w-full-on-small"
         >
          <Image
            src={src}

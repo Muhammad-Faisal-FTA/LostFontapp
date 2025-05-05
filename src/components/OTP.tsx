@@ -1,12 +1,15 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import OTP from '@/components/ui/OTPinput'; // adjust path as needed
+import { useRouter } from 'next/navigation';
+import OTP from '@/components/ui/OTPinput'; // Make sure this path is correct
+import { setAuthData } from '@/lib/auth';  // 🔐 Import the token utility
 
 export default function OTPPage() {
   const [otp, setOtp] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [response, setResponse] = useState<string | null>(null);
+  const router = useRouter();
 
   const handleOTPChange = (value: string) => {
     setOtp(value);
@@ -16,10 +19,10 @@ export default function OTPPage() {
     const submitOTP = async () => {
       if (otp.length !== 4) return;
 
+      setIsSubmitting(true);
       try {
-        setIsSubmitting(true);
         const res = await fetch(
-          'https://lost-and-found-backend-eosin.vercel.app/api/v1/user/verify',
+          'https://lost-and-found-backend-v9hr.onrender.com/api/v1/api/v1/user/verify',
           {
             method: 'POST',
             headers: {
@@ -30,10 +33,25 @@ export default function OTPPage() {
         );
 
         const data = await res.json();
-        setResponse(`✅ Success: ${JSON.stringify(data)}`);
-        alert('OTP Verified!');
+
+        if (!res.ok || data.Code !== 200) {
+          setResponse(`❌ Error: ${data?.message || 'Verification failed'}`);
+          return;
+        }
+
+        // ✅ Extract data
+        const { accessToken, refreshToken, createdUser } = data.data;
+
+        // 💾 Store tokens & user
+        setAuthData(accessToken, refreshToken, createdUser);
+
+        // ✅ Show success and redirect
+        setResponse('✅ User verified successfully!');
+        alert('OTP Verified! Redirecting...');
+
+        router.push('/sign-In');
       } catch (error: any) {
-        setResponse(`❌ Error: ${error.message}`);
+        setResponse(`❌ Network Error: ${error.message}`);
       } finally {
         setIsSubmitting(false);
       }

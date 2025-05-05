@@ -11,18 +11,18 @@ import { cn } from "@/lib/utils";
 export default  function SignUp() {
   // from data object
   interface FormDataType {
-    name: string;
+    fullname: string;
     email: string;
-    phoneNumber: string;
+    contact: string;
     password: string;
-    // profileImage: File | null;
+    profileImage: File | null;
   }
   const [formData, setFormData] = useState<FormDataType>({
-    name: "",
+    fullname: "",
     email: "",
-    phoneNumber: "",
+    contact: "",
     password: "",
-    // profileImage: null 
+    profileImage: null 
   });
   // 
   const [otp, setOtp] = useState<string>(""); //  OTP state
@@ -36,33 +36,31 @@ export default  function SignUp() {
   // };
   // Form submission
   // ===========================================================================
-  // const BaseUrl = process.BASE_URL;
+  // client-side
+const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+
 
 
   const handleSubmit = async  (e: React.FormEvent<HTMLFormElement>) => {    // Handle submission
     e.preventDefault();
     const formToSend = new FormData();
-    formToSend.append("name", formData.name);
+    formToSend.append("fullName", formData.fullname);
     formToSend.append("email", formData.email);
-    formToSend.append("phoneNumber", formData.phoneNumber);
+    formToSend.append("contact", formData.contact);
     formToSend.append("password", formData.password);
-    // if (formData.profileImage) {
-    //   formToSend.append("profileImage", formData.profileImage);
-    // }
+    if (formData.profileImage) {
+      formToSend.append("profileImage", formData.profileImage);
+    }
 
     formToSend.forEach((value, key) => {//consoling...
       console.log(key, value);
     });
-      setOtp("12345");// just for  ui,  this time
-  //  post the data :https://lost-and-found-backend-eosin.vercel.app/api/v1/user/register
-  // https://cors-anywhere.herokuapp.com/https://reqres.in/api/register
+
     try {
-      const response = await fetch("https://lost-and-found-backend-eosin.vercel.app/api/v1/user/register", {
+      const response = await fetch("https://lost-and-found-backend-v9hr.onrender.com/api/v1/user/register", {
         method: "POST",
         body: formToSend,
         credentials: 'include', // <--- IMPORTANT
-        headers: { "Content-Type": "application/json" },
-        // body: JSON.stringify(formData),
         
       });
       
@@ -94,12 +92,12 @@ export default  function SignUp() {
       <form className="my-6" onSubmit={handleSubmit}>
  {/* Name */}
           <LabelInputContainer className="mb-4">
-            <Label htmlFor="name">Name</Label>
-            <Input id="name" placeholder="your name" type="text" 
+            <Label htmlFor="fullname">Name</Label>
+            <Input id="fullname" placeholder="your name" type="text" 
              onChange={(e) => {
               setFormData({
                 ...formData, // Keep existing values
-                name: e.target.value, // Update the "name" field
+                fullname: e.target.value, // Update the "name" field
               });
             }}
             />
@@ -121,12 +119,12 @@ export default  function SignUp() {
 
 {/* Phone number */}
         <LabelInputContainer className="mb-4">
-          <Label htmlFor="phonenumber">Phone Number</Label>
-          <Input id="phonenumber"  placeholder="0311-1234567"  type="tel"  
+          <Label htmlFor="contact">Phone Number</Label>
+          <Input id="contact"  placeholder="0311-1234567"  type="tel"  
            onChange={(e) => {
             setFormData({
               ...formData, // Keep existing values
-              phoneNumber: e.target.value, // Update the "phonenumber" field
+              contact: e.target.value, // Update the "contact" field
             });
           }}
           />
@@ -146,7 +144,7 @@ export default  function SignUp() {
         </LabelInputContainer>
 
 {/* Profile Image */}
-        {/* <LabelInputContainer className="mb-8">
+        <LabelInputContainer className="mb-8">
         <Label htmlFor="profileImage">Profile Image</Label>
         <Input
          id="profileImage"
@@ -156,11 +154,11 @@ export default  function SignUp() {
              const file = e.target.files?.[0] || null;
                setFormData({
                ...formData,
-               profileImage: file,
+              //  profileImage: file,
              });
            }}
          />
-         </LabelInputContainer> */}
+         </LabelInputContainer>
 
 {/* Submit button */}
         <button

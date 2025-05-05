@@ -1,11 +1,139 @@
+// "use client";
+
+// import { useState, useEffect } from "react";
+// import Link from "next/link";
+// import Image from 'next/image';
+// import { usePathname } from "next/navigation";
+// import { Menu, X } from "lucide-react";
+// import LogoutButton from "@/components/Logout";
+
+// import logo from '@/constants/Logo.png';
+
+// const navItems = [
+//   { name: "Lost", href: "/lost-item" },
+//   { name: "Report Lost", href: "/post-lost" },
+//   { name: "Found", href: "/found-item" },
+//   { name: "Report Found", href: "/post-find" },
+//   { name: "Profile", href: "/profile" },
+// ];
+
+// export default function Navbar() {
+//   const [isOpen, setIsOpen] = useState(false);
+//   const [isLoggedIn, setIsLoggedIn] = useState(false);
+//   const pathname = usePathname();
+
+//   useEffect(() => {
+//     // Function to check if user is logged in
+//     const checkAuth = () => {
+//       const user = localStorage.getItem("user");
+//       setIsLoggedIn(!!user);
+//     };
+
+//     // Initial check when the component mounts
+//     checkAuth();
+
+//     // Listen for 'authChanged' event to update login state
+//     window.addEventListener("authChanged", checkAuth);
+
+//     // Cleanup the event listener on unmount
+//     return () => {
+//       window.removeEventListener("authChanged", checkAuth);
+//     };
+//   }, []);
+
+//   return (
+//     <header className="bg-white shadow-md w-full">
+//       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+//         <div className="flex justify-between items-center py-1">
+//           {/* Logo */}
+//           <div className="flex items-center">
+//             <Link href={'/'}>
+//               <Image src={logo} width={100} height={90} alt="Lost & Found" />
+//             </Link>
+//             <Link href={'/'}>
+//               <h1 className="text-3xl font-bold ml-2">Lost & Found</h1>
+//             </Link>
+//           </div>
+
+//           {/* Desktop Menu */}
+//           <nav className="hidden md:flex space-x-6 items-center">
+//             {navItems.map((item) => (
+//               <Link
+//                 key={item.name}
+//                 href={item.href}
+//                 className={`px-3 py-2 rounded-[5rem] text-gray-700 font-medium ${
+//                   pathname === item.href ? "bg-blue-500 text-white" : "hover:bg-gray-200"
+//                 }`}
+//               >
+//                 {item.name}
+//               </Link>
+//             ))}
+//             {!isLoggedIn ? (
+//               <>
+//                 <Link href="/sign-In" className="px-2 py-2 text-blue-500 font-medium">
+//                   Login
+//                 </Link>
+//                 <Link href="/sign-Up" className="text-[0.87rem] text-center px-2 py-2 bg-blue-500 text-white rounded">
+//                   Sign Up
+//                 </Link>
+//               </>
+//             ) : (
+//               <LogoutButton />
+//             )}
+//           </nav>
+
+//           {/* Mobile Menu Button */}
+//           <button onClick={() => setIsOpen(!isOpen)} className="md:hidden p-2 text-gray-700">
+//             {isOpen ? <X size={28} /> : <Menu size={28} />}
+//           </button>
+//         </div>
+
+//         {/* Mobile Menu */}
+//         {isOpen && (
+//           <nav className="md:hidden flex flex-col space-y-2 pb-4">
+//             {navItems.map((item) => (
+//               <Link
+//                 key={item.name}
+//                 href={item.href}
+//                 className={`px-4 py-2 block ${
+//                   pathname === item.href ? "bg-blue-500 text-white" : "hover:bg-gray-200"
+//                 }`}
+//                 onClick={() => setIsOpen(false)}
+//               >
+//                 {item.name}
+//               </Link>
+//             ))}
+//             {!isLoggedIn ? (
+//               <>
+//                 <Link href="/sign-In" className="px-4 py-2 bg-blue-500 text-white rounded-l" onClick={() => setIsOpen(false)}>
+//                   Login
+//                 </Link>
+//                 <Link href="/sign-Up" className="px-4 py-2 bg-blue-500 text-white rounded-lg" onClick={() => setIsOpen(false)}>
+//                   Sign Up
+//                 </Link>
+//               </>
+//             ) : (
+//               <div className="px-4">
+//                 <LogoutButton />
+//               </div>
+//             )}
+//           </nav>
+//         )}
+//       </div>
+//     </header>
+//   );
+// }
+
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
-import Image from 'next/image'
+import Image from 'next/image';
 import { usePathname } from "next/navigation";
-import { Menu, X } from "lucide-react"; // For mobile menu icons
-import logo from '@/constants/Logo.png'
+import { Menu, X } from "lucide-react";
+import LogoutButton from "@/components/Logout";
+
+import logo from '@/constants/Logo.png';
 
 const navItems = [
   { name: "Lost", href: "/lost-item" },
@@ -17,7 +145,27 @@ const navItems = [
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [hasMounted, setHasMounted] = useState(false);
   const pathname = usePathname();
+
+  useEffect(() => {
+    setHasMounted(true); // Ensure hydration-safe rendering
+
+    const checkAuth = () => {
+      const user = localStorage.getItem("user");
+      setIsLoggedIn(!!user);
+    };
+
+    checkAuth();
+    window.addEventListener("authChanged", checkAuth);
+
+    return () => {
+      window.removeEventListener("authChanged", checkAuth);
+    };
+  }, []);
+
+  if (!hasMounted) return null; // Prevent SSR mismatch
 
   return (
     <header className="bg-white shadow-md w-full">
@@ -25,33 +173,39 @@ export default function Navbar() {
         <div className="flex justify-between items-center py-1">
           {/* Logo */}
           <div className="flex items-center">
-          <Link href={'/'}>
-            <Image src={logo} width={100} height={90} alt="Lost & Found"  />
-          </Link>
-          <Link href={'/'}>
-            <h1 className="text-3xl font-bold ml-2">Lost & Found</h1>
-          </Link>  
+            <Link href="/">
+              <Image src={logo} width={100} height={90} alt="Lost & Found" />
+            </Link>
+            <Link href="/">
+              <h1 className="text-3xl font-bold ml-2">Lost & Found</h1>
+            </Link>
           </div>
 
           {/* Desktop Menu */}
-          <nav className="hidden md:flex space-x-6">
+          <nav className="hidden md:flex space-x-6 items-center">
             {navItems.map((item) => (
               <Link
                 key={item.name}
                 href={item.href}
-                className={`px-3 py-2 rounded-lg text-gray-700 font-medium ${
+                className={`px-3 py-2 rounded-[5rem] text-gray-700 font-medium ${
                   pathname === item.href ? "bg-blue-500 text-white" : "hover:bg-gray-200"
                 }`}
               >
                 {item.name}
               </Link>
             ))}
-            <Link href="/sign-In" className="px-4 py-2 text-blue-500 font-medium">
-              Login
-            </Link>
-            <Link href="/sign-Up" className="text-center px-4 py-2 bg-blue-500 text-white rounded-lg">
-              Sign Up
-            </Link>
+            {!isLoggedIn ? (
+              <>
+                <Link href="/sign-In" className="px-2 py-2 text-blue-500 font-medium">
+                  Login
+                </Link>
+                <Link href="/sign-Up" className="text-[0.87rem] text-center px-2 py-2 bg-blue-500 text-white rounded">
+                  Sign Up
+                </Link>
+              </>
+            ) : (
+              <LogoutButton />
+            )}
           </nav>
 
           {/* Mobile Menu Button */}
@@ -75,15 +229,20 @@ export default function Navbar() {
                 {item.name}
               </Link>
             ))}
-            <Link href="/sign-In" className="px-4 py-2 text-blue-500" onClick={() => setIsOpen(false)}>
-              Login
-            </Link>
-            <Link href="/sign-Up" className="px-4 py-2 bg-blue-500 text-white rounded-lg" onClick={() => setIsOpen(false)}>
-              Sign In
-            </Link>
-            <Link href="/sign-Up" className="px-4 py-2 bg-blue-500 text-white rounded-lg" onClick={() => setIsOpen(false)}>
-              Sign Out
-            </Link>
+            {!isLoggedIn ? (
+              <>
+                <Link href="/sign-In" className="px-4 py-2 bg-blue-500 text-white rounded-l" onClick={() => setIsOpen(false)}>
+                  Login
+                </Link>
+                <Link href="/sign-Up" className="px-4 py-2 bg-blue-500 text-white rounded-lg" onClick={() => setIsOpen(false)}>
+                  Sign Up
+                </Link>
+              </>
+            ) : (
+              <div className="px-4">
+                <LogoutButton />
+              </div>
+            )}
           </nav>
         )}
       </div>
