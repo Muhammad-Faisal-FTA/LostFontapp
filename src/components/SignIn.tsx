@@ -202,7 +202,9 @@ export default function SignIn() {
 
         window.dispatchEvent(new Event("authChanged"));
         alert("Login successful!");
-        router.push("/");
+        setTimeout(()=>{
+          router.push("/");
+        }, 100)
       } else {
         alert(`Login failed: ${data.message}`);
       }
@@ -219,7 +221,7 @@ export default function SignIn() {
       const loginTime = localStorage.getItem("loginTime");
       if (loginTime) {
         const loginTimestamp = parseInt(loginTime, 1);
-        const twelveHours = 1 * 1 * 1 * 100;
+        const twelveHours = 12 * 60 * 60 * 1000;
         const now = Date.now();
 
         if (now - loginTimestamp > twelveHours) {

@@ -89,7 +89,7 @@ const Cardsl: React.FC = () => {
               contactLink={`mailto:someone@example.com`}
               imageUrl={item.photo.url}
               onDelete={() => handleDelete(item._id)}
-              canDelete={item.userId === currentUserId}
+              // canDelete={item.userId === currentUserId}
             />
           ))}
         </div>

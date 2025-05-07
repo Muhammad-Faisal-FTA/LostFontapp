@@ -22,7 +22,7 @@ export default function OTPPage() {
       setIsSubmitting(true);
       try {
         const res = await fetch(
-          'https://lost-and-found-backend-v9hr.onrender.com/api/v1/api/v1/user/verify',
+          'https://lost-and-found-backend-v9hr.onrender.com/api/v1/user/verify',
           {
             method: 'POST',
             headers: {
@@ -48,8 +48,11 @@ export default function OTPPage() {
         // ✅ Show success and redirect
         setResponse('✅ User verified successfully!');
         alert('OTP Verified! Redirecting...');
+        
+        setTimeout(() => {
+          router.push('/sign-In');
+        }, 100);
 
-        router.push('/sign-In');
       } catch (error: any) {
         setResponse(`❌ Network Error: ${error.message}`);
       } finally {

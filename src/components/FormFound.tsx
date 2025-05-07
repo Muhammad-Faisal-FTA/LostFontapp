@@ -45,29 +45,28 @@ const FormFound = () => {
     if (data.photo.length > 0) {
       formData.append("photo", data.photo[0]);
     }
+    // https://lost-and-found-backend-v9hr.onrender.com/api/v1/found-items/report-found-item
 
     try {
       const response = await axios.post(
-        "https://lost-and-found-backend-v9hr.onrender.com/api/v1/api/v1/found-items/report-found-item",
+        'https://lost-and-found-backend-v9hr.onrender.com/api/v1/found-items/report-found-item',
         formData,
         {
           headers: {
-            "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${token}`,
+            'Content-Type': 'multipart/form-data',
+            'Authorization': `Bearer ${token}`,
           },
         }
       );
-      //  post message
-        setMessage("✅ Item posted successfully!");
-        setTimeout(()=>{
-          setMessage('')
-         },5000)
-      
-      setItemId(response.data.data?._id || response.data.id);
-      reset(); // reset form
-    } catch (error) {
-      console.error("Post error:", error);
-      setMessage("❌ Failed to post item.");
+      setMessage('✅ Item posted successfully!');
+      setTimeout(()=>{
+       setMessage('')
+      },5000)
+      setItemId(response.data.id); // Adjust if backend returns a different key
+      reset(); // <-- thisresets the form
+    } catch (error: any) {
+      console.error('Upload error:', error);
+      setMessage('❌ Failed to post item.');
     }
 
     setLoading(false);
@@ -77,26 +76,79 @@ const FormFound = () => {
     if (!itemId || !token) return;
 
     setLoading(true);
-    setMessage("");
+    setMessage('');
 
     try {
       await axios.delete(
-        `https://lost-and-found-backend-ydw0.onrender.com/api/v1/found-items/delete-founditem/${itemId}`,
+        `https://lost-and-found-backend-v9hr.onrender.com/api/v1/api/v1/lost-items/delete/${itemId}`,
         {
           headers: {
-            Authorization: `Bearer ${token}`,
+            'Authorization': `Bearer ${token}`,
           },
         }
       );
-      setMessage("🗑️ Item deleted successfully!");
+      setMessage('🗑️ Item deleted successfully!');
       setItemId(null);
     } catch (error) {
-      console.error("Delete error:", error);
-      setMessage("❌ Failed to delete item.");
+      console.error('Delete error:', error);
+      setMessage('❌ Failed to delete item.');
     }
 
     setLoading(false);
   };
+    
+
+    // try {
+    //   const response = await axios.post(
+    //     "https://lost-and-found-backend-ydw0.onrender.com/api/v1/found-items/report-found-item",
+    //     formData,
+    //     {
+    //       headers: {
+    //         "Content-Type": "multipart/form-data",
+    //         Authorization: `Bearer ${token}`,
+    //       },
+    //     }
+    //   );
+    //   //  post message
+    //     setMessage("✅ Item posted successfully!");
+    //     setTimeout(()=>{
+    //       setMessage('')
+    //      },5000)
+      
+    //   setItemId(response.data.data?._id || response.data.id);
+    //   reset(); // reset form
+    // } catch (error) {
+    //   console.error("Post error:", error);
+    //   setMessage("❌ Failed to post item.");
+    // }
+
+    // setLoading(false);
+  // };
+
+  // const handleDelete = async () => {
+  //   if (!itemId || !token) return;
+
+  //   setLoading(true);
+  //   setMessage("");
+
+  //   try {
+  //     await axios.delete(
+  //       `https://lost-and-found-backend-ydw0.onrender.com/api/v1/found-items/delete-founditem/${itemId}`,
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${token}`,
+  //         },
+  //       }
+  //     );
+  //     setMessage("🗑️ Item deleted successfully!");
+  //     setItemId(null);
+  //   } catch (error) {
+  //     console.error("Delete error:", error);
+  //     setMessage("❌ Failed to delete item.");
+  //   }
+
+  //   setLoading(false);
+  // };
 
   return (
     <div className="max-w-lg mx-auto p-3 bg-white shadow-lg rounded-lg mt-10">
@@ -126,15 +178,11 @@ const FormFound = () => {
 
         <div>
           <label className="block text-sm font-medium">Location:</label>
-          <select
+          <input
             {...register("location", { required: "Location is required" })}
             className="w-full p-2 border rounded-lg"
-          >
-            <option value="">Select location</option>
-            <option value="Location1">Location 1</option>
-            <option value="Location2">Location 2</option>
-            <option value="Location3">Location 3</option>
-          </select>
+          />
+            
           {errors.location && <p className="text-red-500 text-sm">{errors.location.message}</p>}
         </div>
 
@@ -177,7 +225,7 @@ const FormFound = () => {
         </button>
       </form>
 
-      {itemId && (
+      {/* {itemId && (
         <button
           onClick={handleDelete}
           className="w-full mt-4 bg-red-600 text-white p-2 rounded-lg hover:bg-red-700 transition disabled:opacity-50"
@@ -185,7 +233,7 @@ const FormFound = () => {
         >
           {loading ? "Deleting..." : "Delete Item"}
         </button>
-      )}
+      )} */}
     </div>
   );
 };

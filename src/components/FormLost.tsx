@@ -45,10 +45,10 @@ const FormLost = () => {
     if (data.photo.length > 0) {
       formData.append('photo', data.photo[0]);
     }
-
+// https://lost-and-found-backend-v9hr.onrender.com/api/v1/lost-items/report-lost-item
     try {
       const response = await axios.post(
-        'https://lost-and-found-backend-v9hr.onrender.com/api/v1/api/v1/lost-items/report-lost-item',
+        'https://lost-and-found-backend-v9hr.onrender.com/api/v1/lost-items/report-lost-item',
         formData,
         {
           headers: {

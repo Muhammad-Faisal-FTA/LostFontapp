@@ -1,13 +1,34 @@
-import React from 'react'
-import ProfileU from '@/components/ProfieU'
+"use client"
 
-const Profile = () => {
+import { useState } from 'react';
+import ProfileCard from '@/components/ProfileCard';
+
+const ParentComponent = () => {
+  const [accessToken, setAccessToken] = useState('your-access-token');
+  const refreshToken = 'your-refresh-token';
+
+  const handleTokenRefresh = (newAccessToken: string) => {
+    setAccessToken(newAccessToken);
+    // You might also want to persist the new token
+  };
+
+  const initialProfileData = {
+    name: 'John Doe',
+    email: 'john.doe@example.com',
+    contact: '+1 (555) 123-4567',
+    profileImage: '/profile.jpg',
+  };
+
   return (
-    <div className='w-full h-full p-2 bg-Report bg-cover bg-repeat '>
-      <h1 className=' text-2xl text-center text-black p-2 fount-bold fount-sarabun'>Profile</h1>
-      <ProfileU />
+    <div className="container mx-auto p-4">
+      <ProfileCard
+        initialData={initialProfileData}
+        accessToken={accessToken}
+        refreshToken={refreshToken}
+        onTokenRefresh={handleTokenRefresh}
+      />
     </div>
-  )
-}
+  );
+};
 
-export default Profile
+export default ParentComponent;

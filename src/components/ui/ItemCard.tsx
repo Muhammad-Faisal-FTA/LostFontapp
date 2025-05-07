@@ -57,7 +57,7 @@ const ItemCard: React.FC<ItemCardProps> = ({
       {/* Action Buttons */}
       <div className="px-4 pb-4 mt-auto space-y-2">
         <Link
-          href={contactLink || '/chat'}
+          href={'/chat'}
           className="w-full block text-center bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-300"
         >
           Contact
