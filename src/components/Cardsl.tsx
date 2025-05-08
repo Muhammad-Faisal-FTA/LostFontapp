@@ -35,7 +35,7 @@ const Cardsl: React.FC = () => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          'https://lost-and-found-backend-eosin.vercel.app/api/v1/lost-items/get-lostitems'
+          'https://lost-and-found-backend-v9hr.onrender.com/api/v1/lost-items/get-lostitems'
         );
         const result = await response.json();
         setItems(result.data || []);
@@ -54,11 +54,10 @@ const Cardsl: React.FC = () => {
     }
 
     if (!confirm("Are you sure you want to delete this item?")) return;
-
     setLoadingId(id);
     try {
       await axios.delete(
-        `https://lost-and-found-backend-eosin.vercel.app/api/v1/lost-items/delete-lostitem/${id}`,
+        `https://lost-and-found-backend-v9hr.onrender.com/api/v1/lost-items/delete-lostitem/${id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 
 export default function UpdateImage() {
   const [image, setImage] = useState<File | null>(null);
@@ -18,7 +19,7 @@ export default function UpdateImage() {
 
     try {
       setLoading(true);
-      const res = await fetch("https://lost-and-found-backend-v9hr.onrender.com/api/v1/api/v1/user/update-profile", {
+      const res = await fetch("https://lost-and-found-backend-v9hr.onrender.com/api/v1user/update-profile", {
         method: "POST",
         body: formData,
       });
@@ -41,7 +42,7 @@ export default function UpdateImage() {
         className="mb-2"
       />
       {previewUrl && (
-        <img
+        <Image
           src={previewUrl}
           alt="Preview"
           className="w-32 h-32 object-cover rounded-full border mt-2"

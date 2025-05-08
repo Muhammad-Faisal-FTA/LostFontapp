@@ -27,7 +27,7 @@ const Cardsf: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('https://lost-and-found-backend-eosin.vercel.app/api/v1/found-items/get-founditems');
+        const response = await fetch('https://lost-and-found-backend-v9hr.onrender.com/api/v1/found-items/get-founditems');
         const result = await response.json();
         setItems(result.data || []);
         if (result.data.length === 0) {
@@ -52,7 +52,7 @@ const Cardsf: React.FC = () => {
     setLoadingId(id);
     try {
       await axios.delete(
-        `https://lost-and-found-backend-v9hr.onrender.com/api/v1/api/v1/found-items/delete-founditem/${id}`,
+        `https://lost-and-found-backend-v9hr.onrender.com/api/v1/found-items/delete-founditem/${id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
