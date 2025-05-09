@@ -26,7 +26,7 @@ const FormLost = () => {
   useEffect(() => {
     if (!token) {
       alert('You must be logged in to access this page.');
-      router.push('/signin'); // Redirect if not authenticated
+      router.push('/sign-In'); // Redirect if not authenticated
     }
   }, [token, router]);
 

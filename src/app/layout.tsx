@@ -2,7 +2,8 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
 import Navbar from '@/components/Navbar'
-import { AuthProvider } from '@/context/AuthContext'
+// import { AuthProvider } from '@/context/AuthContext'
+import Routeloader from '@/components/Routeloader'
 // import { UserProvider } from '@/context/UserContext';
 
 const inter = Inter({ subsets: ['latin'] })
@@ -23,6 +24,7 @@ export default function RootLayout({
         {/* rap children in layout */}
         {/* <AuthProvider> */}
         <Navbar />
+        <Routeloader />
         {children}
         {/* </AuthProvider> */}
       </body>

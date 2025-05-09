@@ -85,7 +85,7 @@ const Cardsl: React.FC = () => {
               title={item.item}
               location={item.location}
               additionalDetails={item.description}
-              contactLink={`mailto:someone@example.com`}
+              contactLink={item.userId}
               imageUrl={item.photo.url}
               onDelete={() => handleDelete(item._id)}
               // canDelete={item.userId === currentUserId}
