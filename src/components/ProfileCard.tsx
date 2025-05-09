@@ -9,7 +9,7 @@
 // };
 
 // type ProfileData = {
-//   fullName: string;
+//   fullfullName: string;
 //   contact: string;
 //   profileImage: string;
 // };
@@ -20,7 +20,7 @@
 //   const [message, setMessage] = useState<MessageType | null>(null);
 //   const [isLoading, setIsLoading] = useState(false);
 //   const [profileData, setProfileData] = useState<ProfileData>({
-//     fullName: '',
+//     fullfullName: '',
 //     contact: '',
 //     profileImage: '',
 //   });
@@ -66,7 +66,7 @@
 
 //         const data = await handleApiResponse(response);
 //         setProfileData({
-//           fullName: data.fullName || '',
+//           fullfullName: data.fullName || '',
 //           contact: data.contact || '',
 //           profileImage: data.profileImage || '',
 //         });
@@ -419,12 +419,244 @@
 //   );
 // }
 
-"use client"
+// "use client"
+// import { useState, useRef } from 'react';
+// import Image from 'next/image';
+
+// interface ProfileData {
+//   name: string;
+//   email: string;
+//   contact: string;
+//   profileImage: string;
+// }
+
+// interface ProfileCardProps {
+//   initialData: ProfileData;
+//   accessToken: string;
+//   refreshToken: string;
+//   onTokenRefresh: (newAccessToken: string) => void;
+// }
+
+// const ProfileCard: React.FC<ProfileCardProps> = ({
+//   initialData,
+//   accessToken,
+//   refreshToken,
+//   onTokenRefresh,
+// }) => {
+//   const [profileData, setProfileData] = useState<ProfileData>(initialData);
+//   const [isEditing, setIsEditing] = useState(false);
+//   const [tempData, setTempData] = useState<Omit<ProfileData, 'email' | 'profileImage'>>({
+//     name: initialData.name,
+//     contact: initialData.contact,
+//   });
+//   const [isLoading, setIsLoading] = useState(false);
+//   const [error, setError] = useState<string | null>(null);
+//   const fileInputRef = useRef<HTMLInputElement>(null);
+
+//   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+//     const { name, value } = e.target;
+//     setTempData(prev => ({ ...prev, [name]: value }));
+//   };
+
+//   const toggleEdit = () => {
+//     if (isEditing) {
+//       handleSave();
+//     } else {
+//       setTempData({ name: profileData.name, contact: profileData.contact });
+//       setIsEditing(true);
+//     }
+//   };
+
+//   const handleImageClick = () => {
+//     fileInputRef.current?.click();
+//   };
+
+//   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+//     if (e.target.files && e.target.files[0]) {
+//       const file = e.target.files[0];
+
+//       if (!file.type.startsWith('image/')) {
+//         setError('Please upload an image file');
+//         return;
+//       }
+//       if (file.size > 2 * 1024 * 1024) {
+//         setError('Image size should be less than 2MB');
+//         return;
+//       }
+
+//       setIsLoading(true);
+//       setError(null);
+
+//       try {
+//         const formData = new FormData();
+//         formData.append('profileImage', file);
+
+//         let response = await fetch('https://lost-and-found-backend-v9hr.onrender.com/api/v1/user/update-profile', {
+//           method: 'PATCH',
+//           headers: { 'Authorization': `Bearer ${accessToken}` },
+//           body: formData,
+//         });
+
+//         if (response.status === 401) {
+//           const refreshResponse = await fetch('/api/refresh', {
+//             method: 'PATCH',
+//             headers: { 'Content-Type': 'application/json' },
+//             body: JSON.stringify({ refreshToken }),
+//           });
+
+//           if (!refreshResponse.ok) throw new Error('Session expired. Please log in again.');
+
+//           const { accessToken: newAccessToken } = await refreshResponse.json();
+//           onTokenRefresh(newAccessToken);
+
+//           response = await fetch('https://lost-and-found-backend-v9hr.onrender.com/api/v1/user/update-profile', {
+//             method: 'PATCH',
+//             headers: { 'Authorization': `Bearer ${newAccessToken}` },
+//             body: formData,
+//           });
+//         }
+
+//         if (!response.ok) throw new Error('Failed to update profile image');
+
+//         const result = await response.json();
+//         setProfileData(prev => ({ ...prev, profileImage: result.profileImageUrl }));
+//       } catch (err) {
+//         setError(err instanceof Error ? err.message : 'Failed to update profile image');
+//       } finally {
+//         setIsLoading(false);
+//       }
+//     }
+//   };
+
+//   const handleSave = async () => {
+//     if (!tempData.name.trim() || !tempData.contact.trim()) {
+//       setError('Name and contact are required');
+//       return;
+//     }
+
+//     setIsLoading(true);
+//     setError(null);
+
+//     try {
+//       let response = await fetch('https://lost-and-found-backend-v9hr.onrender.com/api/v1/user/edit-profile', {
+//         method: 'PATCH',
+//         headers: {
+//           'Content-Type': 'application/json',
+//           'Authorization': `Bearer ${accessToken}`,
+//         },
+//         body: JSON.stringify(tempData),
+//       });
+
+//       if (response.status === 401) {
+//         const refreshResponse = await fetch('/api/refresh', {
+//           method: 'PATCH',
+//           headers: { 'Content-Type': 'application/json' },
+//           body: JSON.stringify({ refreshToken }),
+//         });
+
+//         if (!refreshResponse.ok) throw new Error('Session expired. Please log in again.');
+
+//         const { accessToken: newAccessToken } = await refreshResponse.json();
+//         onTokenRefresh(newAccessToken);
+
+//         response = await fetch('https://lost-and-found-backend-v9hr.onrender.com/api/v1/user/edit-profile', {
+//           method: 'PATCH', // ✅ Fixed method from PATCH to PATCH
+//           headers: {
+//             'Content-Type': 'application/json',
+//             'Authorization': `Bearer ${newAccessToken}`,
+//           },
+//           body: JSON.stringify(tempData),
+//         });
+//       }
+
+//       if (!response.ok) throw new Error('Failed to update profile');
+
+//       const result = await response.json();
+//       setProfileData(prev => ({ ...prev, ...result }));
+//       setIsEditing(false);
+//     } catch (err) {
+//       setError(err instanceof Error ? err.message : 'Failed to update profile');
+//     } finally {
+//       setIsLoading(false);
+//     }
+//   };
+
+//   return (
+//     <div className="max-w-sm mx-auto p-4 bg-white rounded-2xl shadow-md mt-4 md:max-w-md sm:w-full">
+//       <div className="flex flex-col items-center text-center space-y-4">
+//         <div className="relative w-32 h-32">
+//           <Image
+//             src={profileData.profileImage || '/default-profile.png'}
+//             alt="Profile"
+//             fill
+//             className="rounded-full object-cover border-4 border-gray-300 cursor-pointer hover:border-blue-500 transition"
+//             onClick={handleImageClick}
+//           />
+//           {isLoading && (
+//             <div className="absolute inset-0 bg-black/50 flex items-center justify-center rounded-full">
+//               <div className="h-6 w-6 border-2 border-white border-t-transparent animate-spin rounded-full"></div>
+//             </div>
+//           )}
+//           <input
+//             type="file"
+//             ref={fileInputRef}
+//             onChange={handleFileChange}
+//             accept="image/*"
+//             className="hidden"
+//           />
+//         </div>
+//         <div className="w-full">
+//           {isEditing ? (
+//             <input
+//               type="text"
+//               name="name"
+//               value={tempData.name}
+//               onChange={handleInputChange}
+//               className="w-full mb-2 px-3 py-2 border rounded-lg"
+//               disabled={isLoading}
+//             />
+//           ) : (
+//             <h2 className="text-lg font-semibold text-gray-800">{profileData.name}</h2>
+//           )}
+//           <p className="text-sm text-gray-500">{profileData.email}</p>
+//           <div className="mt-2">
+//             {isEditing ? (
+//               <input
+//                 type="text"
+//                 name="contact"
+//                 value={tempData.contact}
+//                 onChange={handleInputChange}
+//                 className="w-full px-3 py-2 border rounded-lg"
+//                 disabled={isLoading}
+//               />
+//             ) : (
+//               <p className="text-gray-600">{profileData.contact}</p>
+//             )}
+//           </div>
+//         </div>
+//         {error && <p className="text-sm text-red-500">{error}</p>}
+//         <button
+//           onClick={toggleEdit}
+//           disabled={isLoading}
+//           className={`w-full py-2 px-4 rounded-lg text-white transition-colors ${isEditing ? 'bg-green-500 hover:bg-green-600' : 'bg-blue-500 hover:bg-blue-600'}`}
+//         >
+//           {isLoading ? (isEditing ? 'Saving...' : 'Loading...') : isEditing ? 'Save Changes' : 'Edit Profile'}
+//         </button>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default ProfileCard;
+
+
+"use client";
+
 import { useState, useRef } from 'react';
 import Image from 'next/image';
 
 interface ProfileData {
-  name: string;
+  fullName: string;
   email: string;
   contact: string;
   profileImage: string;
@@ -446,7 +678,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
   const [profileData, setProfileData] = useState<ProfileData>(initialData);
   const [isEditing, setIsEditing] = useState(false);
   const [tempData, setTempData] = useState<Omit<ProfileData, 'email' | 'profileImage'>>({
-    name: initialData.name,
+    fullName: initialData.fullName,
     contact: initialData.contact,
   });
   const [isLoading, setIsLoading] = useState(false);
@@ -462,7 +694,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
     if (isEditing) {
       handleSave();
     } else {
-      setTempData({ name: profileData.name, contact: profileData.contact });
+      setTempData({ fullName: profileData.fullName, contact: profileData.contact });
       setIsEditing(true);
     }
   };
@@ -475,12 +707,12 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
 
-      if (!file.type.startsWith('image/')) {
-        setError('Please upload an image file');
+      if (!file.type.startsWith("image/")) {
+        setError("Please upload an image file");
         return;
       }
       if (file.size > 2 * 1024 * 1024) {
-        setError('Image size should be less than 2MB');
+        setError("Image size should be less than 2MB");
         return;
       }
 
@@ -489,39 +721,39 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
 
       try {
         const formData = new FormData();
-        formData.append('profileImage', file);
+        formData.append("profileImage", file);
 
-        let response = await fetch('https://lost-and-found-backend-v9hr.onrender.com/api/v1/user/update-profile', {
-          method: 'PATCH',
-          headers: { 'Authorization': `Bearer ${accessToken}` },
+        let response = await fetch("https://lost-and-found-backend-v9hr.onrender.com/api/v1/user/update-profile", {
+          method: "PATCH",
+          headers: { Authorization: `Bearer ${accessToken}` },
           body: formData,
         });
 
         if (response.status === 401) {
-          const refreshResponse = await fetch('/api/refresh', {
-            method: 'PATCH',
-            headers: { 'Content-Type': 'application/json' },
+          const refreshResponse = await fetch("/api/refresh", {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ refreshToken }),
           });
 
-          if (!refreshResponse.ok) throw new Error('Session expired. Please log in again.');
+          if (!refreshResponse.ok) throw new Error("Session expired. Please log in again.");
 
           const { accessToken: newAccessToken } = await refreshResponse.json();
           onTokenRefresh(newAccessToken);
 
-          response = await fetch('https://lost-and-found-backend-v9hr.onrender.com/api/v1/user/update-profile', {
-            method: 'PATCH',
-            headers: { 'Authorization': `Bearer ${newAccessToken}` },
+          response = await fetch("https://lost-and-found-backend-v9hr.onrender.com/api/v1/user/update-profile", {
+            method: "PATCH",
+            headers: { Authorization: `Bearer ${newAccessToken}` },
             body: formData,
           });
         }
 
-        if (!response.ok) throw new Error('Failed to update profile image');
+        if (!response.ok) throw new Error("Failed to update profile image");
 
         const result = await response.json();
         setProfileData(prev => ({ ...prev, profileImage: result.profileImageUrl }));
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to update profile image');
+        setError(err instanceof Error ? err.message : "Failed to update profile image");
       } finally {
         setIsLoading(false);
       }
@@ -529,8 +761,8 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
   };
 
   const handleSave = async () => {
-    if (!tempData.name.trim() || !tempData.contact.trim()) {
-      setError('Name and contact are required');
+    if (!tempData.fullName.trim() || !tempData.contact.trim()) {
+      setError("Full name and contact are required");
       return;
     }
 
@@ -538,44 +770,44 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
     setError(null);
 
     try {
-      let response = await fetch('https://lost-and-found-backend-v9hr.onrender.com/api/v1/user/edit-profile', {
-        method: 'PATCH',
+      let response = await fetch("https://lost-and-found-backend-v9hr.onrender.com/api/v1/user/edit-profile", {
+        method: "PATCH",
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${accessToken}`,
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
         },
         body: JSON.stringify(tempData),
       });
 
       if (response.status === 401) {
-        const refreshResponse = await fetch('/api/refresh', {
-          method: 'PATCH',
-          headers: { 'Content-Type': 'application/json' },
+        const refreshResponse = await fetch("/api/refresh", {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ refreshToken }),
         });
 
-        if (!refreshResponse.ok) throw new Error('Session expired. Please log in again.');
+        if (!refreshResponse.ok) throw new Error("Session expired. Please log in again.");
 
         const { accessToken: newAccessToken } = await refreshResponse.json();
         onTokenRefresh(newAccessToken);
 
-        response = await fetch('https://lost-and-found-backend-v9hr.onrender.com/api/v1/user/edit-profile', {
-          method: 'PATCH', // ✅ Fixed method from PATCH to PATCH
+        response = await fetch("https://lost-and-found-backend-v9hr.onrender.com/api/v1/user/edit-profile", {
+          method: "PATCH",
           headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${newAccessToken}`,
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${newAccessToken}`,
           },
           body: JSON.stringify(tempData),
         });
       }
 
-      if (!response.ok) throw new Error('Failed to update profile');
+      if (!response.ok) throw new Error("Failed to update profile");
 
       const result = await response.json();
       setProfileData(prev => ({ ...prev, ...result }));
       setIsEditing(false);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to update profile');
+      setError(err instanceof Error ? err.message : "Failed to update profile");
     } finally {
       setIsLoading(false);
     }
@@ -586,7 +818,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
       <div className="flex flex-col items-center text-center space-y-4">
         <div className="relative w-32 h-32">
           <Image
-            src={profileData.profileImage || '/default-profile.png'}
+            src={profileData.profileImage || "/default-profile.png"}
             alt="Profile"
             fill
             className="rounded-full object-cover border-4 border-gray-300 cursor-pointer hover:border-blue-500 transition"
@@ -609,14 +841,14 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
           {isEditing ? (
             <input
               type="text"
-              name="name"
-              value={tempData.name}
+              name="fullName"
+              value={tempData.fullName}
               onChange={handleInputChange}
               className="w-full mb-2 px-3 py-2 border rounded-lg"
               disabled={isLoading}
             />
           ) : (
-            <h2 className="text-lg font-semibold text-gray-800">{profileData.name}</h2>
+            <h2 className="text-lg font-semibold text-gray-800">{profileData.fullName}</h2>
           )}
           <p className="text-sm text-gray-500">{profileData.email}</p>
           <div className="mt-2">
@@ -638,9 +870,11 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
         <button
           onClick={toggleEdit}
           disabled={isLoading}
-          className={`w-full py-2 px-4 rounded-lg text-white transition-colors ${isEditing ? 'bg-green-500 hover:bg-green-600' : 'bg-blue-500 hover:bg-blue-600'}`}
+          className={`w-full py-2 px-4 rounded-lg text-white transition-colors ${
+            isEditing ? "bg-green-500 hover:bg-green-600" : "bg-blue-500 hover:bg-blue-600"
+          }`}
         >
-          {isLoading ? (isEditing ? 'Saving...' : 'Loading...') : isEditing ? 'Save Changes' : 'Edit Profile'}
+          {isLoading ? (isEditing ? "Saving..." : "Loading...") : isEditing ? "Save Changes" : "Edit Profile"}
         </button>
       </div>
     </div>

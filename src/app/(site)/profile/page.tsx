@@ -13,7 +13,7 @@ const ParentComponent = () => {
   };
 
   const initialProfileData = {
-    name: 'John Doe',
+    fullName: 'John Doe',
     email: 'john.doe@example.com',
     contact: '+1 (555) 123-4567',
     profileImage: '/profile.jpg',
