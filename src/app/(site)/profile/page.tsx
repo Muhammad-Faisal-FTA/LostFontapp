@@ -1,6 +1,6 @@
 // "use client"
 
-import UserProfileCard from "@/components/ProfileCard";
+// import UserProfileCard from "@/components/ProfileCard";
 
 // import { useState } from 'react';
 // import ProfileCard from '@/components/ProfileCard';
@@ -132,12 +132,14 @@ import UserProfileCard from "@/components/ProfileCard";
 
 // export default UserProfile;
 
+import ProfileCard from '@/components/ProfileCard';
 
 export default function ProfilePage() {
   return (
-    <div>
-      <h1>My Profile</h1>
-      <UserProfileCard />
+    <div className="min-h-screen bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-3xl mx-auto">
+        <ProfileCard />
+      </div>
     </div>
   );
 }
