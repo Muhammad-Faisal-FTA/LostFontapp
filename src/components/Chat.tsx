@@ -241,10 +241,10 @@ setTimeout(()=>{
 
 
   return (
-    <div className="flex h-screen font-sans relative">
+    <div className="flex h-[80vh] md:h-screen font-sans relative">
       {/* Sidebar */}
       <div
-        className="hidden md:block md:w-[25%] bg-[#075E54] text-white p-4 overflow-y-auto"
+        className={`$${sidebarVisible ? 'block w-4/5' : 'hidden'} md:block w-[25%] bg-[#075E54] text-white p-4 overflow-y-auto`}
 
       >
         
@@ -264,7 +264,7 @@ setTimeout(()=>{
       </div>
 
 
-      {/* Chat area */}
+      {/* Chat area h= */}
       <div className="w-full md:w-3/4 flex flex-col bg-white">
         <div
           className={`p-4 border-b border-gray-200 font-medium text-[#333] ${sidebarVisible ? 'pl-20' : 'pl-[2rem]'}`}
