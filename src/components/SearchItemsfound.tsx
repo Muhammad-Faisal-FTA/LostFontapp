@@ -121,8 +121,7 @@ const SearchItems = () => {
             additionalDetails={item.description}
             contactLink={item.contactLink}
             imageUrl={item.photo.url}
-            onDelete={() => handleDelete(item._id)}
-          />
+            onDelete={() => handleDelete(item._id)} userId={''} _id={''}          />
         ))}
       </div>
     </div>

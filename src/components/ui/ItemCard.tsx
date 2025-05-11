@@ -55,8 +55,7 @@ const ItemCard: React.FC<ItemCardProps> = ({
       <div className="p-4 flex-grow">
         <p className="font-bold text-gray-800">{title}</p>
         <p className="text-sm text-gray-500">{location}</p>
-        <p className="text-gray-700 text-sm mt-3">{additionalDetails}{_id}</p>
-        <p className="text-gray-700 text-sm mt-3">{additionalDetails}{userId}</p>
+        <p className="text-gray-700 text-sm mt-3">{additionalDetails}</p>
       </div>
 
       {/* Action Buttons */}

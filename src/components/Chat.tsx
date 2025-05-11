@@ -1,11 +1,12 @@
 
 "use client";
-
+// import jwt_decode from "jwt-decode";
 import { useEffect, useState, useRef } from 'react';
 import io, { Socket } from 'socket.io-client';
 import axios from 'axios';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
+
 
 const SOCKET_ENDPOINT = 'https://lost-and-found-backend-v9hr.onrender.com';//t
 const API_BASE = 'https://lost-and-found-backend-v9hr.onrender.com/api/v1/chat';//t
@@ -14,9 +15,15 @@ const USER_ME_ENDPOINT = 'https://lost-and-found-backend-v9hr.onrender.com/api/v
 
 interface User {
   _id: string;// product id posted by receiver
-  name: string;
 }
-
+interface UserProfile {
+  _id: string;
+  data: UserProfile;
+  fullName: string;
+  email: string;
+  contact: string;
+  profileImage: string;
+}
 interface Message {
   senderId: string; //  current user profile id
   receiverId: string; // receiver who posted the card and know receive the message
@@ -30,9 +37,46 @@ export default function ChatApp({ receiverId, item }: { receiverId?: string; ite
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState('');
   const [sidebarVisible, setSidebarVisible] = useState(true);
-  const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const [currentUser, setCurrentUser] = useState<string | null>(null);
   const socket = useRef<Socket | null>(null);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
+// ===============================================
+// current 
+
+   useEffect(() => {
+  const getUser = async () => {
+    try {
+      const token = localStorage.getItem('accessToken');
+      if (!token) return;
+
+      const response = await fetch('https://lost-and-found-backend-v9hr.onrender.com/api/v1/user/get-current-user', {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        if (response.status === 401) {
+          throw new Error('Session expired. Please login again.');
+        }
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const responseJson = await response.json();
+      const user = responseJson.data.user; // 👈 assuming it's under `user`
+      setCurrentUser(user._id);
+      console.log("Current user ID:", user._id);
+    } catch (err) {
+      console.error("Failed to fetch current user:", err);
+    }
+  };
+
+  getUser();
+}, []);
+
+
+ console.log(currentUser + "cusiqaws==================================");
 
   // 1) Pull from URL if not passed as prop
   const searchParams = useSearchParams();
@@ -42,6 +86,7 @@ export default function ChatApp({ receiverId, item }: { receiverId?: string; ite
   // helper to load any conversation
   let fetchMessages = async (userId: string) => {
     const token = localStorage.getItem("accessToken");
+    // setCurrentUser(token);
     if (!token) return console.error("No token");
 
     try {
@@ -59,6 +104,7 @@ export default function ChatApp({ receiverId, item }: { receiverId?: string; ite
 
   let sendMessage = async () => {
     const token = localStorage.getItem("accessToken");
+    // setCurrentUser(token)
     // return;
     if (!token) return console.error("No token");
     if (!receiverId) return console.error("Receiver not selected.");
@@ -71,11 +117,16 @@ export default function ChatApp({ receiverId, item }: { receiverId?: string; ite
         headers: { Authorization: `Bearer ${token}` },
       });
       socket.current?.emit("send-message", payload);
-      // setMessages((m) => [
-      //   ...m,
-      //   { ...payload, senderId: currentUser!._id, timestamp: new Date() },
-      // ]);
-      // setNewMessage("");
+// ====================================================================================
+setTimeout(()=>{
+  console.log(currentUser + "qwewerty ioamajs  ")
+},100)
+// return;
+      setMessages((m) => [
+        ...m,
+        { ...payload, senderId: currentUser!, timestamp: new Date() },
+      ]);
+      setNewMessage("");
     } catch (e) {
       console.error(e);
     }
@@ -89,26 +140,27 @@ export default function ChatApp({ receiverId, item }: { receiverId?: string; ite
   }, [receiverId]);
 
   // 4) Inject sample messages once we know currentUser
-  // useEffect(() => {
-  //   if (receiverId && item && currentUser) {
-  //     const receiver: User = { _id: receiverId, name: "User from item card" };
-  //     setSelectedUser(receiver);
-  //     setMessages([
-  //       {
-  //         senderId: receiverId,
-  //         receiverId: currentUser._id,
-  //         message: `Hello! Is this your item: "${item}"?`,
-  //         timestamp: new Date(),
-  //       },
-  //       {
-  //         senderId: currentUser._id,
-  //         receiverId: receiverId,
-  //         message: "Yes, I posted it. Let's connect!",
-  //         timestamp: new Date(),
-  //       },
-  //     ]);
-  //   }
-  // }, [receiverId, item, currentUser]);
+  useEffect(() => {
+    if (receiverId && item && currentUser) {
+      const receiver: User = { _id: receiverId, };
+      
+      setSelectedUser(receiver);
+      setMessages([
+        {
+          senderId:  currentUser,
+          receiverId: receiverId,
+          message: `Hello! Is this your item: "${item}"?`,
+          timestamp: new Date(),
+        },
+        {
+          senderId: currentUser,
+          receiverId: receiverId,
+          message: "Yes, I posted it. Let's connect!",
+          timestamp: new Date(),
+        },
+      ]);
+    }
+  }, [receiverId, item, currentUser]);
 
   // ===============================================================================
 
@@ -117,39 +169,6 @@ export default function ChatApp({ receiverId, item }: { receiverId?: string; ite
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  // =================================================================================
-
-  // 2) Initialize socket, fetch user & contacts
-  useEffect(() => {
-    const initializeSocket = async () => {
-      try {
-        const token = localStorage.getItem("accessToken");
-        if (!token) {
-          console.error("No token");
-          return;
-        }
-
-        socket.current = io(SOCKET_ENDPOINT, { auth: { token } });
-
-        socket.current.on("receive-message", (msg: Message) => {
-          if (
-            msg.senderId === selectedUser?._id ||
-            msg.receiverId === selectedUser?._id
-          ) {
-            setMessages((m) => [...m, msg]);
-          }
-        });
-      } catch (error) {
-        console.error("Error initializing socket:", error);
-      }
-    };
-
-    initializeSocket();
-
-    return () => {
-      socket.current?.disconnect();
-    };
-  }, [selectedUser]);
 
 
   const fetchCurrentUser = async (token: string) => {
@@ -157,30 +176,31 @@ export default function ChatApp({ receiverId, item }: { receiverId?: string; ite
       const res = await axios.get(USER_ME_ENDPOINT, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      setCurrentUser(res.data.user);
+      // setCurrentUser(res.data.user);
       // sample message...
       // If receiverId and item are passed, simulate a first message
-      if (receiverId && item) {
-        const receiver: User = {
-          _id: receiverId,
-          name: "User from item card"
-        };
-        setSelectedUser(receiver);
-        // setMessages([
-        //   {
-        //     senderId: receiverId,
-        //     receiverId: res.data.user._id,
-        //     message: `Hello! Is this your item: "${item}"?`,
-        //     timestamp: new Date(),
-        //   },
-        //   {
-        //     senderId: res.data.user._id,
-        //     receiverId: receiverId,
-        //     message: "Yes, I posted it. Let's connect!",
-        //     timestamp: new Date(),
-        //   },
-        // ]);
-      }
+      // if (receiverId && item) {
+      //   const receiver: User = {
+      //     _id: receiverId,
+      //     name: "User from item card"
+      //   };
+
+      //   setSelectedUser(receiver);
+      //   setMessages([
+      //     {
+      //       senderId: currentUser,
+      //       receiverId: res.data.user._id,
+      //       message: `Hello! Is this your item: "${item}"?`,
+      //       timestamp: new Date(),
+      //     },
+      //     {
+      //       senderId: res.data.user._id,
+      //       receiverId: receiverId,
+      //       message: "Yes, I posted it. Let's connect!",
+      //       timestamp: new Date(),
+      //     },
+      //   ]);
+      // }
 
 
     } catch (err) {
@@ -206,19 +226,14 @@ export default function ChatApp({ receiverId, item }: { receiverId?: string; ite
       return;
     }
 
-    // socket.current = io(SOCKET_ENDPOINT, {
-    //   auth: { token },
-    // });
+    socket.current = io(SOCKET_ENDPOINT, {
+      auth: { token },
+    });
 
-    // socket.current.on('receive-message', (message: Message) => {
-    //   if (message.senderId === selectedUser?._id || message.receiverId === selectedUser?._id) {
-    //     setMessages((prev) => [...prev, message]);
-    //   }
-    // });
 
     fetchCurrentUser(token);
     fetchUsers(token);
-
+// ghhgfh
     // return () => {
     //   socket.current?.disconnect();
     // };
@@ -229,41 +244,32 @@ export default function ChatApp({ receiverId, item }: { receiverId?: string; ite
     <div className="flex h-screen font-sans relative">
       {/* Sidebar */}
       <div
-        className={`$${sidebarVisible ? 'block w-4/5' : 'hidden'} md:block w-[25%] bg-[#075E54] text-white p-4 overflow-y-auto`}
+        className="hidden md:block md:w-[25%] bg-[#075E54] text-white p-4 overflow-y-auto"
+
       >
-        <h2 className="text-xl font-bold mb-4">Contacts</h2>
-        {Array.isArray(users) &&
-          users.map((user) => (
-            <div
-              key={user._id}
-              className={`p-2 rounded cursor-pointer hover:bg-[#0d7e6b] ${selectedUser?._id === user._id ? 'bg-[#0d7e6b]' : ''}`}
-              onClick={() => fetchMessages(user._id)}
-            >
-              {user.name}
-            </div>
-          ))}
+        
         <Link
           href="/"
           className="text-[0.87rem] text-center px-1 py-2 bg-blue-500 text-white rounded block mt-4 text-center"
         >
           Home
         </Link>
+         <div className="p-6 rounded-xl mt-9 shadow-lg bg-gradient-to-br from-blue-100 to-purple-200 dark:from-zinc-800 dark:to-zinc-700 border border-gray-200 dark:border-zinc-600">
+          <blockquote className="text-lg italic text-gray-700 dark:text-gray-300 leading-relaxed text-center">
+            “Sometimes, what’s lost isn’t gone —
+                <br />
+             it’s just waiting to be found by someone kind.”
+          </blockquote>
+         </div>
       </div>
 
-      {/* Toggle button */}
-      <button
-        className="md:hidden absolute top-4 left-3 z-10 bg-[#075E54] text-white p-2 rounded-md"
-        onClick={() => setSidebarVisible((prev) => !prev)}
-      >
-        {sidebarVisible ? 'Hide' : 'Show'} Sidebar
-      </button>
 
       {/* Chat area */}
       <div className="w-full md:w-3/4 flex flex-col bg-white">
         <div
           className={`p-4 border-b border-gray-200 font-medium text-[#333] ${sidebarVisible ? 'pl-20' : 'pl-[2rem]'}`}
         >
-          {selectedUser ? `Chatting with ${selectedUser.name}` : 'Select a contact to chat'}
+          {/* {selectedUser ? `Chatting with ${selectedUser.name}` : 'Commom chat on a card'} */}
         </div>
 
         {/* Messages */}
@@ -273,7 +279,7 @@ export default function ChatApp({ receiverId, item }: { receiverId?: string; ite
             messages.map((msg, idx) => (
               <div
                 key={idx}
-                className={`mb-2 max-w-xs p-2 rounded-xl text-sm ${msg.senderId === currentUser?._id
+                className={`mb-2 max-w-xs p-2 rounded-xl text-sm ${msg.senderId === currentUser
                   ? 'bg-[#DCF8C6] self-end ml-auto'
                   : 'bg-gray-200'
                   }`}

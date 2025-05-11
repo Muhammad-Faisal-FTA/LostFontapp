@@ -68,7 +68,7 @@ const Cardsl: React.FC = () => {
       alert("Item deleted successfully.");
     } catch (error) {
       console.error("Delete failed:", error);
-      alert("Failed to delete item.");
+      alert(" Failed to delete item. This is not your Card!...");
     }
     setLoadingId(null);
   };
@@ -80,6 +80,8 @@ const Cardsl: React.FC = () => {
           {items.map((item) => (
             <ItemCard
               key={item._id}
+              _id={item._id}
+              userId={item.userId}
               itemName={item.name}
               date={item.date.slice(0, 10)}
               title={item.item}
@@ -87,7 +89,8 @@ const Cardsl: React.FC = () => {
               additionalDetails={item.description}
               contactLink={item.userId}
               imageUrl={item.photo.url}
-              onDelete={() => handleDelete(item._id)} userId={''} _id={''}              // canDelete={item.userId === currentUserId}
+              onDelete={() => handleDelete(item._id)} 
+              // userId={''} _id={''}    // canDelete={item.userId === currentUserId}
             />
           ))}
         </div>

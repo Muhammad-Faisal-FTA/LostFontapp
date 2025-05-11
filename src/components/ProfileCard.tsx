@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
 interface UserProfile {
+  _id: string;
   data: UserProfile;
   fullName: string;
   email: string;
@@ -25,9 +26,9 @@ export default function ProfileCard() {
     // Get token from localStorage
     const fetchUserData = async () => {
       const token = localStorage.getItem('accessToken');
-      setTimeout(()=>{
-        // alert(token);
-      }, 100)
+      // setTimeout(()=>{
+      //   // alert(token);
+      // }, 100)
       if (!token) {
         setTimeout(()=>{
           setError('Please login to view your profile');
@@ -60,6 +61,7 @@ export default function ProfileCard() {
         const user: UserProfile = responseJson.data;
         // console.log(JSON.stringify(user, null, 2))
         setUserData(user);
+        console.log(user._id);
       } catch (err) {
         setError(err instanceof Error ? err.message : 'An unknown error occurred');
       } finally {
@@ -71,6 +73,7 @@ export default function ProfileCard() {
       fetchUserData();
     }, 1000)
   }, [router]);
+
 
   if (loading) {
     return (
@@ -95,6 +98,7 @@ export default function ProfileCard() {
       </div>
     );
   }
+  console.log(userData)
   return (
     <div className="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl">
       <div className="md:flex">
@@ -108,12 +112,12 @@ export default function ProfileCard() {
               priority
             />
             {/* upload file on update */}
-            <input
+            {/* <input
                type="file"
                accept="image/*"
                onChange={(e) => setSelectedFile(e.target.files?.[0] || null)}
                className="mt-4"
-             />
+             /> */}
 
           </div>
         </div>

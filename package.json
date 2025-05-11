@@ -16,6 +16,7 @@
     "axios": "^1.8.4",
     "bufferutil": "^4.0.9",
     "clsx": "^2.1.1",
+    "jwt-decode": "^4.0.0",
     "lucide-react": "^0.479.0",
     "motion": "^12.4.7",
     "next": "^13.5.8",

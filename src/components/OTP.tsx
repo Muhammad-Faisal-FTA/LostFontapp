@@ -1,277 +1,82 @@
+"use client";
+import React, { useState } from "react";
+import { Label } from "./ui/label";
+import { Input } from "./ui/input";
+import { cn } from "@/lib/utils";
+import { useRouter } from "next/navigation";
 
 
-// 'use client';
-// import { useState, useEffect } from 'react';
-// import { useRouter, useSearchParams } from 'next/navigation';
-// import OTP from '@/components/ui/OTPinput';
-// import { setAuthData } from '@/lib/auth';
-
-// export default function OTPPage() {
-//   const [otp, setOtp] = useState('');
-//   const [isSubmitting, setIsSubmitting] = useState(false);
-//   const [response, setResponse] = useState<string | null>(null);
-//   const searchParams = useSearchParams();
-//   const router = useRouter();
-
-//   const email = searchParams.get('email'); // ✅ Get email from query string
-
-//   const handleOTPChange = (value: string) => {
-//     setOtp(value);
-//   };
-
-//   useEffect(() => {
-//     const submitOTP = async () => {
-//       if (!email || otp.length !== 4) return;
-
-//       setIsSubmitting(true);
-//       try {
-//         const res = await fetch(
-//           'https://lost-and-found-backend-v9hr.onrender.com/api/v1/user/verify',
-//           {
-//             method: 'POST',
-//             headers: { 'Content-Type': 'application/json' },
-//             body: JSON.stringify({ email, otp }),
-//           }
-//         );
-
-//         const data = await res.json();
-
-//         if (!res.ok || data.Code !== 200) {
-//           setResponse(`❌ Error: ${data?.message || 'Verification failed'}`);
-//           return;
-//         }
-
-//         const { accessToken, refreshToken, createdUser } = data.data;
-
-//         setAuthData(accessToken, refreshToken, createdUser);
-
-//         setResponse('✅ User verified successfully!');
-//         alert('OTP Verified! Redirecting...');
-
-//         setTimeout(() => {
-//           router.push('/sign-In'); // ✅ Check if this is your actual route
-//         }, 100);
-//       } catch (error: any) {
-//         setResponse(`❌ Network Error: ${error.message}`);
-//       } finally {
-//         setIsSubmitting(false);
-//       }
-//     };
-
-//     if (otp.length === 4 && !isSubmitting) {
-//       submitOTP();
-//     }
-//   }, [otp, isSubmitting, email, router]);
-
-//   return (
-//     <div className="flex flex-col items-center justify-center min-h-screen p-4">
-//       <h1 className="text-2xl font-semibold mb-4">
-//         ✔️ OTP sent to {email || 'your email'}...
-//       </h1>
-
-//       <OTP length={4} onChange={handleOTPChange} />
-
-//       <p className="mt-4 text-gray-600">OTP Value: {otp} on {email}</p>
-
-//       {isSubmitting && (
-//         <div className="mt-2 text-blue-600 font-medium animate-pulse">Verifying...</div>
-//       )}
-
-//       {response && <p className="mt-2 text-sm text-gray-700">{response}</p>}
-//     </div>
-//   );
-// }
-
-
-
-
-// 'use client';
-
-// import { useState, useEffect } from 'react';
-// import { useRouter } from 'next/navigation';
-// import OTP from '@/components/ui/OTPinput'; // ✅ Make sure the path is correct
-// import { setAuthData } from '@/lib/auth';   // ✅ Utility to store tokens
-
-// export default function OTPPage() {
-//   const [otp, setOtp] = useState('');
-//   const [isSubmitting, setIsSubmitting] = useState(false);
-//   const [response, setResponse] = useState<string | null>(null);
-//   const router = useRouter();
-
-//   const handleOTPChange = (value: string) => {
-//     setOtp(value);
-//   };
-
-//   useEffect(() => {
-//     const submitOTP = async () => {
-//       if (otp.length !== 4) return;
-
-//       setIsSubmitting(true);
-//       try {
-//         const res = await fetch(
-//           'https://lost-and-found-backend-v9hr.onrender.com/api/v1/user/verify',
-//           {
-//             method: 'POST',
-//             headers: {
-//               'Content-Type': 'application/json',
-//             },
-//             body: JSON.stringify({ otp }),
-//           }
-//         );
-
-//         const data = await res.json();
-
-//         if (!res.ok || data.Code !== 200) {
-//           setResponse(`❌ Error: ${data?.message || 'Verification failed'}`);
-//           return;
-//         }
-
-//         const { accessToken, refreshToken, createdUser } = data.data;
-
-//         // Store tokens and user data
-//         setAuthData(accessToken, refreshToken, createdUser);
-
-//         setResponse('✅ User verified successfully!');
-//         alert('OTP Verified! Redirecting...');
-
-//         setTimeout(() => {
-//           router.push('/sign-In'); // Make sure this path is correct
-//         }, 100);
-//       } catch (error: any) {
-//         setResponse(`❌ Network Error: ${error.message}`);
-//       } finally {
-//         setIsSubmitting(false);
-//       }
-//     };
-
-//     if (otp.length === 4 && !isSubmitting) {
-//       submitOTP();
-//     }
-//   }, [otp, isSubmitting, router]); // ✅ Corrected dependencies
-
-//   return (
-//     <div className="flex flex-col items-center justify-center min-h-screen p-4">
-//       <h1 className="text-2xl font-semibold mb-4">✔️ OTP received on your email...</h1>
-
-//       <OTP length={4} onChange={handleOTPChange} />
-
-//       <p className="mt-4 text-gray-600">OTP Value: {otp}</p>
-
-//       {isSubmitting && (
-//         <div className="mt-2 text-blue-600 font-medium animate-pulse">Verifying...</div>
-//       )}
-
-//       {response && <p className="mt-2 text-sm text-gray-700">{response}</p>}
-//     </div>
-//   );
-// }
-
-
-
-'use client';
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import OTPInput from '@/components/ui/OTPinput'; // Renamed to avoid naming conflict
-import { setAuthData } from '@/lib/auth';
-
-interface OTPPageProps {
+interface OtpVerificationFormProps {
   email: string;
+  // onVerified: () => void;
 }
 
-export default function OTPPage({ email }: OTPPageProps) {
-  const [otp, setOtp] = useState('');
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [response, setResponse] = useState<{message: string; type: 'success' | 'error'} | null>(null);
+export default function OTP({ email }: OtpVerificationFormProps) {
+  const [otp, setOtp] = useState("");
   const router = useRouter();
+  const handleSubmitotp = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!otp) {
+      alert("Please enter the verification otp.");
+      return;
+    }
 
-  const handleOTPChange = (value: string) => {
-    setOtp(value);
-    // Clear any previous messages when OTP changes
-    if (response) setResponse(null);
-  };
-// ================================================================
-  const submitOTP = async () => {
-    if (!email || otp.length !== 4) return;
-
-    setIsSubmitting(true);
     try {
-      const res = await fetch(
-        'https://lost-and-found-backend-v9hr.onrender.com/api/v1/user/verify',
+      const response = await fetch(
+        "https://lost-and-found-backend-v9hr.onrender.com/api/v1/user/verify",
         {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ email, otp }),
-          credentials: 'include' // If using cookies
         }
       );
 
-      const data = await res.json();
+      const responseText = await response.text();
+      console.log("Raw response:", responseText);
 
-      if (!res.ok || data.Code !== 200) {
-        throw new Error(data?.message || 'Verification failed');
+      const data = JSON.parse(responseText);
+      console.log("Parsed response data:", data);
+
+      if (response.ok) {
+        alert("Verification successful.");
+       setTimeout(()=>{
+          router.push("/sign-In");
+        }, 100)
+      } else {
+        alert(`Verification failed: ${data.message}`);
       }
-
-      const { accessToken, refreshToken, createdUser } = data.data;
-      setAuthData(accessToken, refreshToken, createdUser);
-
-      setResponse({
-        message: '✅ Verification successful! Redirecting...',
-        type: 'success'
-      });
-// ========================================================================
-      setTimeout(() => {
-        router.push('/sign-In');
-      }, 1500); // Give user time to see success message
-
-    } catch (error: any) {
-      setResponse({
-        message: `❌ Error: ${error.message}`,
-        type: 'error'
-      });
-    } finally {
-      setIsSubmitting(false);
+    } catch (error) {
+      console.error("Verification failed", error);
+      alert("Verification failed. Try again.");
     }
   };
-console.log(email)
-  // Auto-submit when OTP is complete
-  useEffect(() => {
-    if (otp.length === 4 && !isSubmitting && email) {
-      submitOTP();
-    }
-  }, [otp, isSubmitting, email, setAuthData]);
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen p-4">
-      <h1 className="text-2xl font-semibold mb-4">
-        OTP sent to <span className="text-blue-500">{email}</span>
-      </h1>
-
-      <OTPInput 
-        length={4} 
-        onChange={handleOTPChange} 
-        // disabled={isSubmitting} 
-      />
-
-      {/* Manual submit button as fallback */}
+    <form className="my-4" onSubmit={handleSubmitotp}>
+      <LabelInputContainer className="mb-4">
+        <Label htmlFor="otp">Verification otp</Label>
+        <Input
+          id="otp"
+          placeholder="Enter verification otp"
+          type="text"
+          value={otp}
+          onChange={(e) => setOtp(e.target.value)}
+        />
+      </LabelInputContainer>
       <button
-        onClick={submitOTP}
-        disabled={otp.length !== 4 || isSubmitting}
-        className={`mt-4 px-4 py-2 rounded ${
-          otp.length !== 4 || isSubmitting
-            ? 'bg-gray-300 cursor-not-allowed'
-            : 'bg-blue-500 hover:bg-blue-600 text-white'
-        }`}
+        className="mt-1 bg-gradient-to-br relative group/btn from-black dark:from-zinc-900 dark:to-zinc-900 to-neutral-600 block dark:bg-zinc-800 w-full text-white rounded-md h-10 font-medium"
+        type="submit"
       >
-        {isSubmitting ? 'Verifying...' : 'Verify OTP'}
+        Verify otp
       </button>
-
-      {response && (
-        <p className={`mt-4 text-sm ${
-          response.type === 'success' ? 'text-green-600' : 'text-red-600'
-        }`}>
-          {response.message}
-        </p>
-      )}
-    </div>
+    </form>
   );
 }
+
+const LabelInputContainer = ({ children, className }: { children: React.ReactNode; className?: string }) => {
+  return (
+    <div className={cn("flex flex-col space-y-2 w-full", className)}>
+      {children}
+    </div>
+  );
+};

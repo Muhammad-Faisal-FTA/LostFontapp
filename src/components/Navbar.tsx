@@ -15,7 +15,7 @@ const navItems = [
   { name: "Found", href: "/found-item" },
   { name: "Report Found", href: "/post-find" },
   { name: "Profile", href: "/profile" },
-  { name: "chat", href: "/chat" },
+  // { name: "chat", href: "/chat" },
 ];
 
 export default function Navbar() {

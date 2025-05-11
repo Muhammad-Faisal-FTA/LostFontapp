@@ -11,7 +11,6 @@ export default function ChatPage({ searchParams }: Props) {
   return(
     <> 
     <ChatApp receiverId={userId} item={itemId} />
-    <p >{userId}, {itemId}  Item Id</p>
     </>
   ); 
   
