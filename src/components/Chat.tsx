@@ -241,10 +241,11 @@ setTimeout(()=>{
 
 
   return (
-    <div className="flex h-[80vh] md:h-screen font-sans relative">
+    <div className="flex h-screen font-sans relative">
       {/* Sidebar */}
       <div
-        className={`$${sidebarVisible ? 'block w-4/5' : 'hidden'} md:block w-[25%] bg-[#075E54] text-white p-4 overflow-y-auto`}
+        className="hidden md:block md:w-[25%] bg-[#075E54] text-white p-4 overflow-y-auto"
+
 
       >
         
@@ -254,7 +255,7 @@ setTimeout(()=>{
         >
           Home
         </Link>
-         <div className="p-6 rounded-xl mt-9 shadow-lg bg-gradient-to-br from-blue-100 to-purple-200 dark:from-zinc-800 dark:to-zinc-700 border border-gray-200 dark:border-zinc-600">
+         <div className="p-5 rounded-xl mt-9 shadow-lg bg-gradient-to-br from-blue-100 to-purple-200 dark:from-zinc-800 dark:to-zinc-700 border border-gray-200 dark:border-zinc-600">
           <blockquote className="text-lg italic text-gray-700 dark:text-gray-300 leading-relaxed text-center">
             “Sometimes, what’s lost isn’t gone —
                 <br />
@@ -267,9 +268,10 @@ setTimeout(()=>{
       {/* Chat area h= */}
       <div className="w-full md:w-3/4 flex flex-col bg-white">
         <div
-          className={`p-4 border-b border-gray-200 font-medium text-[#333] ${sidebarVisible ? 'pl-20' : 'pl-[2rem]'}`}
+          className={`p-4 border-b text-sm border-gray-200 font-medium text-[#333] ${sidebarVisible ? 'pl-20' : 'pl-[2rem]'}`}
         >
-          {/* {selectedUser ? `Chatting with ${selectedUser.name}` : 'Commom chat on a card'} */}
+          {/* {selectedUser ? `Chatting with ${selectedUser}` : 'Commom chat on a card'} */}
+           Comman chat on post!
         </div>
 
         {/* Messages */}
@@ -299,7 +301,7 @@ setTimeout(()=>{
         </div>
 
         {/* Input */}
-        <div className="p-4 border-t border-gray-200 flex items-center">
+        <div className="p-2 md:4 border-t border-gray-200 flex items-center">
           <input
             className="flex-1 border rounded-lg px-4 py-2 mr-2 text-sm"
             type="text"
@@ -317,5 +319,75 @@ setTimeout(()=>{
         </div>
       </div>
     </div>
+
+//     <div className="flex h-[100%] font-sans relative">
+//   {/* Sidebar */}
+//   <div className="hidden h-screen   md:block md:w-[25%] bg-[#075E54] text-white p-4 overflow-y-auto">
+//     <Link
+//       href="/"
+//       className="text-[0.87rem] text-center px-1 py-2 bg-blue-500 text-white rounded block mt-4 text-center"
+//     >
+//       Home
+//     </Link>
+//     <div className="p-5 rounded-xl mt-9 shadow-lg bg-gradient-to-br from-blue-100 to-purple-200 dark:from-zinc-800 dark:to-zinc-700 border border-gray-200 dark:border-zinc-600">
+//       <blockquote className="text-lg italic text-gray-700 dark:text-gray-300 leading-relaxed text-center">
+//         “Sometimes, what’s lost isn’t gone —
+//         <br />
+//         it’s just waiting to be found by someone kind.”
+//       </blockquote>
+//     </div>
+//   </div>
+
+//   {/* Chat area */}
+//   <div className="w-full md:w-3/4 flex flex-col bg-white">
+//     {/* Header */}
+//     <div className="p-4 border-b border-gray-200 font-medium text-[#333]">
+//       Comman chat on post!
+//     </div>
+
+//     {/* Messages: flex-1 ensures this fills available space */}
+//     <div className="flex-1 overflow-y-auto p-4">
+//       {messages.map((msg, idx) => (
+//         <div
+//           key={idx}
+//           className={`mb-2 max-w-xs p-2 rounded-xl text-sm ${
+//             msg.senderId === currentUser
+//               ? 'bg-[#DCF8C6] self-end ml-auto'
+//               : 'bg-gray-200'
+//           }`}
+//         >
+//           {msg.message}
+//           <div className="text-[10px] text-gray-500 text-right mt-1">
+//             {new Date(msg.timestamp).toLocaleTimeString([], {
+//               hour: '2-digit',
+//               minute: '2-digit',
+//             })}
+//           </div>
+//         </div>
+//       ))}
+//       <div ref={messagesEndRef} />
+//     </div>
+
+//     {/* Input */}
+//     <div className="p-2 border-t border-gray-200 flex items-center">
+//       <input
+//         className="flex-1 border rounded-lg px-4 py-2 mr-2 text-sm"
+//         type="text"
+//         placeholder="Type a message"
+//         value={newMessage}
+//         onChange={(e) => setNewMessage(e.target.value)}
+//         onKeyDown={(e) => e.key === 'Enter' && sendMessage()}
+//       />
+//       <button
+//         className="bg-[#25D366] text-white px-4 py-2 rounded-lg text-sm"
+//         onClick={sendMessage}
+//       >
+//         Send
+//       </button>
+//     </div>
+//   </div>
+// </div>
+
+
   );
 }
