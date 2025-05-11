@@ -26,7 +26,7 @@ export default function ProfileCard() {
     const fetchUserData = async () => {
       const token = localStorage.getItem('accessToken');
       setTimeout(()=>{
-        alert(token);
+        // alert(token);
       }, 100)
       if (!token) {
         setTimeout(()=>{
@@ -58,7 +58,7 @@ export default function ProfileCard() {
         const responseJson: UserProfile = await response.json();
         // alert(data)
         const user: UserProfile = responseJson.data;
-        console.log(JSON.stringify(user, null, 2))
+        // console.log(JSON.stringify(user, null, 2))
         setUserData(user);
       } catch (err) {
         setError(err instanceof Error ? err.message : 'An unknown error occurred');

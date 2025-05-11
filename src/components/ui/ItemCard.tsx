@@ -9,6 +9,8 @@ interface ItemCardProps {
   location: string;
   additionalDetails: string;
   contactLink?: string;
+  userId: string;
+  _id: string;
   imageUrl: string;
   onDelete?: () => void; // Optional delete function
 }
@@ -20,6 +22,8 @@ const ItemCard: React.FC<ItemCardProps> = ({
   location,
   additionalDetails,
   contactLink,
+  userId,
+  _id,
   imageUrl,
   onDelete,
 }) => {
@@ -51,15 +55,17 @@ const ItemCard: React.FC<ItemCardProps> = ({
       <div className="p-4 flex-grow">
         <p className="font-bold text-gray-800">{title}</p>
         <p className="text-sm text-gray-500">{location}</p>
-        <p className="text-gray-700 text-sm mt-3">{additionalDetails}</p>
+        <p className="text-gray-700 text-sm mt-3">{additionalDetails}{_id}</p>
+        <p className="text-gray-700 text-sm mt-3">{additionalDetails}{userId}</p>
       </div>
 
       {/* Action Buttons */}
       <div className="px-4 pb-4 mt-auto space-y-2">
         <Link
-          href={'/chat'}
+          href={{ pathname: '/chat', query: { receiverId: userId, itemId: _id } }}
           className="w-full block text-center bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-300"
         >
+          
           Contact
         </Link>
 

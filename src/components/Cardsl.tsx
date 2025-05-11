@@ -3,7 +3,7 @@ import ItemCard from './ui/ItemCard';
 import axios from 'axios';
 
 interface Item {
-  _id: string;
+  _id: string; //item id
   name: string;
   item: string;
   location: string;
@@ -87,8 +87,7 @@ const Cardsl: React.FC = () => {
               additionalDetails={item.description}
               contactLink={item.userId}
               imageUrl={item.photo.url}
-              onDelete={() => handleDelete(item._id)}
-              // canDelete={item.userId === currentUserId}
+              onDelete={() => handleDelete(item._id)} userId={''} _id={''}              // canDelete={item.userId === currentUserId}
             />
           ))}
         </div>

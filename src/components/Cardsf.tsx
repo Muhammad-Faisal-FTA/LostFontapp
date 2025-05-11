@@ -6,6 +6,8 @@ import cardDta from '@/data/cardData.json';
 import axios from 'axios';
 
 interface Item {
+  userId: string;
+
   _id: string;
   name: string;
   item: string;
@@ -75,6 +77,8 @@ const Cardsf: React.FC = () => {
           {items.map((item) => (
             <ItemCard
               key={item._id}
+              _id={item._id}
+              userId={item.userId}
               itemName={item.name}
               date={item.date.slice(0, 10)}
               title={item.item}
